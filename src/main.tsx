@@ -7,11 +7,11 @@ import { store } from './redux/store';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Import axios to make it available globally
 import axios from 'axios';
+import { apiUrl } from './lib/apiUrl.ts';
 
 // Configure default axios settings
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+axios.defaults.baseURL = apiUrl;
 
 // Add token to requests if available
 axios.interceptors.request.use((config) => {

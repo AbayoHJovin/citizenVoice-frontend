@@ -19,6 +19,11 @@ const formSchema = z.object({
   email: z.string().email("Please enter a valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   confirmPassword: z.string().min(6, "Confirm password is required"),
+  province: z.string().min(1, "Province is required"),
+  district: z.string().min(1, "District is required"),
+  sector: z.string().min(1, "Sector is required"),
+  cell: z.string().min(1, "Cell is required"),
+  village: z.string().min(1, "Village is required"),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
@@ -40,6 +45,11 @@ const Register = () => {
       email: "",
       password: "",
       confirmPassword: "",
+      province: "",
+      district: "",
+      sector: "",
+      cell: "",
+      village: "",
     },
   });
 
@@ -47,12 +57,20 @@ const Register = () => {
     const result = await dispatch(registerUser({
       name: data.name,
       email: data.email,
-      password: data.password
+      password: data.password,
+      confirmPassword: data.confirmPassword,
+      address: {
+        province: data.province,
+        district: data.district,
+        sector: data.sector,
+        cell: data.cell,
+        village: data.village
+      }
     }));
     
     if (registerUser.fulfilled.match(result)) {
-      // Redirect based on user role (default is citizen)
-      navigate("/dashboard");
+      // Redirect to login page after successful registration
+      navigate("/login");
     }
   };
 
@@ -183,6 +201,104 @@ const Register = () => {
                   </FormItem>
                 )}
               />
+
+              <div className="pt-2 pb-1">
+                <h3 className="text-sm font-medium">Address Information</h3>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="province"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Province</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="Province" 
+                          {...field} 
+                          disabled={isLoading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="district"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>District</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="District" 
+                          {...field} 
+                          disabled={isLoading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <FormField
+                  control={form.control}
+                  name="sector"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Sector</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="Sector" 
+                          {...field} 
+                          disabled={isLoading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="cell"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Cell</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="Cell" 
+                          {...field} 
+                          disabled={isLoading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="village"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Village</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="Village" 
+                          {...field} 
+                          disabled={isLoading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? (

@@ -1,17 +1,17 @@
-
 import { apiUrl } from '@/lib/apiUrl';
 import axios from 'axios';
 
-const baseURL = apiUrl;
-
+// Create an axios instance with the base URL from environment variables
 const api = axios.create({
-  baseURL,
+  baseURL: apiUrl,
   headers: {
     'Content-Type': 'application/json',
+    'credentials': 'include',
   },
 });
+api.defaults.withCredentials = true;
 
-// Request interceptor to add auth token
+// Add a request interceptor to add the auth token to every request
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -20,21 +20,23 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
-// Response interceptor to handle common errors
+// Add a response interceptor to handle common errors
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    return response;
+  },
   (error) => {
-    const { response } = error;
-    
-    // Handle token expiration - redirect to login
-    if (response && response.status === 401) {
+    if (error.response?.status === 401) {
+      // Clear both token and user data on authentication error
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
       window.location.href = '/login';
     }
-    
     return Promise.reject(error);
   }
 );

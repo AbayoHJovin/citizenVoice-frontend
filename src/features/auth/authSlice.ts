@@ -50,8 +50,8 @@ export const registerUser = createAsyncThunk(
   async (credentials: RegisterCredentials, { rejectWithValue }) => {
     try {
       const response = await authService.register(credentials);
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
+      // Don't store token and user data since we're redirecting to login
+      toast.success('Registration successful! Please login to continue.');
       return response;
     } catch (error: any) {
       const message = error.response?.data?.message || 'Failed to register';
@@ -131,11 +131,10 @@ const authSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state) => {
         state.isLoading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
+        // Don't set user or token since we're redirecting to login
+        state.isAuthenticated = false;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
