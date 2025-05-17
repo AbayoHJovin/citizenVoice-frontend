@@ -9,56 +9,63 @@ const LeaderDashboard = () => {
   return (
     <AppLayout>
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold tracking-tight">Team Leader Dashboard</h1>
-        <p className="text-muted-foreground">
-          Welcome back, {user?.name}! Here's an overview of your team and responsibilities.
-        </p>
+        <div className="bg-[#020240]/10 p-6 rounded-lg border border-[#020240]/20">
+          <h1 className="text-3xl font-bold tracking-tight text-[#020240]">Leader Dashboard</h1>
+          <p className="text-muted-foreground mt-2">
+            Welcome back, <span className="font-semibold">{user?.name}</span>!
+          </p>
+          {user?.administrationScope && (
+            <div className="mt-2 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#020240] text-white">
+              {user.administrationScope}
+            </div>
+          )}
+        </div>
         
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Team Members</CardTitle>
+              <CardTitle className="text-sm font-medium">Total Complaints</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">12</div>
+              <div className="text-2xl font-bold">24</div>
               <p className="text-xs text-muted-foreground mt-1">
-                +2 since last month
+                In {user?.administrationScope || 'your area'}
               </p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Open Tasks</CardTitle>
+              <CardTitle className="text-sm font-medium">Open Issues</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">8</div>
               <p className="text-xs text-muted-foreground mt-1">
-                -3 since last week
+                Requiring your attention
               </p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Projects</CardTitle>
+              <CardTitle className="text-sm font-medium">Resolved</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">4</div>
+              <div className="text-2xl font-bold">16</div>
               <p className="text-xs text-muted-foreground mt-1">
-                1 approaching deadline
+                <span className="text-green-500">67%</span> resolution rate
               </p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Team Performance</CardTitle>
+              <CardTitle className="text-sm font-medium">Citizens</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">92%</div>
+              <div className="text-2xl font-bold">1,248</div>
               <p className="text-xs text-muted-foreground mt-1">
-                +5% from previous quarter
+                Registered in your area
               </p>
             </CardContent>
           </Card>

@@ -9,10 +9,15 @@ const CitizenDashboard = () => {
   return (
     <AppLayout>
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold tracking-tight">Citizen Dashboard</h1>
-        <p className="text-muted-foreground">
-          Welcome back, {user?.name}! Here's an overview of your activities and services.
-        </p>
+        <div className="bg-[#020240]/10 p-6 rounded-lg border border-[#020240]/20">
+          <h1 className="text-3xl font-bold tracking-tight text-[#020240]">Citizen Dashboard</h1>
+          <p className="text-muted-foreground mt-2">
+            Welcome back, <span className="font-semibold">{user?.name}</span>!
+          </p>
+          
+          {/* Display location information if available */}
+          
+        </div>
         
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <Card>

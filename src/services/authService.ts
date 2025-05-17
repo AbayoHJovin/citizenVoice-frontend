@@ -56,6 +56,18 @@ export const authService = {
     return response.data;
   },
   
+  updateProfile: async (profileData: {
+    name: string;
+    province?: string;
+    district?: string;
+    sector?: string;
+    cell?: string;
+    village?: string;
+  }) => {
+    const response = await api.put('/api/auth/profile', profileData);
+    return response.data;
+  },
+  
   refreshToken: async () => {
     const response = await api.post('/api/auth/refresh');
     return response.data;
