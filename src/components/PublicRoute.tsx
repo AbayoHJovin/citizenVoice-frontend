@@ -1,7 +1,7 @@
 
 import { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAppSelector } from '../redux/hooks';
+import { useAuth } from '../hooks/useAuth';
 
 interface PublicRouteProps {
   children: ReactNode;
@@ -9,7 +9,9 @@ interface PublicRouteProps {
 }
 
 const PublicRoute = ({ children, restricted = false }: PublicRouteProps) => {
-  const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+  // For public routes, we don't check authentication with the server
+  // We only use what's already in the Redux store
+  const { isAuthenticated, user } = useAuth(false);
 
   // If authenticated and route is restricted, redirect based on role
   if (isAuthenticated && restricted) {

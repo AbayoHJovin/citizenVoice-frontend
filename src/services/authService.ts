@@ -23,7 +23,6 @@ export interface RegisterCredentials {
 
 export interface AuthResponse {
   user: User;
-  token: string;
 }
 
 export const authService = {
@@ -48,7 +47,17 @@ export const authService = {
   },
   
   getCurrentUser: async () => {
-    const response = await api.post<User>('/api/auth/me');
+    const response = await api.get('/api/auth/me');
+    return response.data;
+  },
+  
+  logout: async () => {
+    const response = await api.post('/api/auth/logout');
+    return response.data;
+  },
+  
+  refreshToken: async () => {
+    const response = await api.post('/api/auth/refresh');
     return response.data;
   },
 

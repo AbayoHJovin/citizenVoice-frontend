@@ -14,7 +14,6 @@ export interface User {
 
 interface AuthState {
   user: User | null;
-  token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
@@ -22,8 +21,7 @@ interface AuthState {
 
 const initialState: AuthState = {
   user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null,
-  token: localStorage.getItem('token'),
-  isAuthenticated: !!localStorage.getItem('token'),
+  isAuthenticated: !!localStorage.getItem('user'), // Now we determine authentication by user presence
   isLoading: false,
   error: null,
 };
@@ -34,7 +32,7 @@ export const loginUser = createAsyncThunk(
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       const response = await authService.login(credentials);
-      localStorage.setItem('token', response.token);
+      // Only store user data in localStorage, tokens are in HTTP-only cookies
       localStorage.setItem('user', JSON.stringify(response.user));
       return response;
     } catch (error: any) {
@@ -65,10 +63,17 @@ export const logoutUser = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      localStorage.removeItem('token');
+      // Call the logout endpoint to clear cookies on the server side
+      await authService.logout();
+      // Clear user data from localStorage
       localStorage.removeItem('user');
+      // Clear the auth check flag from sessionStorage
+      sessionStorage.removeItem('authChecked');
       return null;
     } catch (error: any) {
+      // Even if the API call fails, we should still clear local storage and session storage
+      localStorage.removeItem('user');
+      sessionStorage.removeItem('authChecked');
       return rejectWithValue('Failed to logout');
     }
   }
@@ -104,6 +109,33 @@ export const resetPassword = createAsyncThunk(
   }
 );
 
+export const checkAuthStatus = createAsyncThunk(
+  'auth/checkStatus',
+  async (_, { rejectWithValue }) => {
+    try {
+      // Verify authentication by fetching the current user
+      const response = await authService.getCurrentUser();
+      
+      // The backend returns { name, email, role }
+      // We need to format it to match our User interface
+      const userData: User = {
+        id: '', // The ID isn't returned from /me endpoint
+        name: response.name,
+        email: response.email,
+        role: response.role as Role
+      };
+      
+      // If successful, update localStorage with the latest user data
+      localStorage.setItem('user', JSON.stringify(userData));
+      return { user: userData };
+    } catch (error: any) {
+      // If there's an error, clear user data
+      localStorage.removeItem('user');
+      return rejectWithValue('Session expired. Please login again.');
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -119,7 +151,6 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isAuthenticated = true;
         state.user = action.payload.user;
-        state.token = action.payload.token;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -144,7 +175,6 @@ const authSlice = createSlice({
       // Logout cases
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
-        state.token = null;
         state.isAuthenticated = false;
       })
       
@@ -172,6 +202,22 @@ const authSlice = createSlice({
       .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
+      })
+      
+      // Check auth status cases
+      .addCase(checkAuthStatus.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(checkAuthStatus.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
+        state.isAuthenticated = true;
+      })
+      .addCase(checkAuthStatus.rejected, (state) => {
+        state.isLoading = false;
+        state.user = null;
+        state.isAuthenticated = false;
       });
   },
 });
