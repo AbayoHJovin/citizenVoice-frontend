@@ -59,10 +59,12 @@ const ComplaintCard: React.FC<ComplaintCardProps> = ({ complaint, onEdit }) => {
             <div className="flex flex-wrap gap-1">
               {complaint.images.slice(0, 5).map((image, index) => (
                 <img 
-                  key={index}
-                  src={image}
+                  key={image.id || index}
+                  src={image.url}
                   alt={`Attachment ${index + 1}`}
                   className="w-12 h-12 object-cover rounded border border-gray-200"
+                  onClick={() => window.open(image.url, '_blank')}
+                  style={{ cursor: 'pointer' }}
                 />
               ))}
               {complaint.images.length > 5 && (

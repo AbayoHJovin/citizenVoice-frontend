@@ -11,7 +11,8 @@ import {
   User,
   Users,
   Settings,
-  Shield
+  Shield,
+  FileText
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Button } from '../../components/ui/button';
@@ -97,6 +98,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             {user?.role === 'CITIZEN' && (
               <>
                 <NavLink href="/dashboard" icon={Home} label="Dashboard" />
+                <NavLink href="/complaints" icon={FileText} label="Complaints" />
                 <NavLink href="/profile" icon={User} label="My Profile" />
               </>
             )}

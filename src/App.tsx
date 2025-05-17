@@ -16,6 +16,8 @@ import ResetPassword from "./pages/ResetPassword";
 import CitizenDashboard from "./pages/dashboard/CitizenDashboard";
 import LeaderDashboard from "./pages/dashboard/LeaderDashboard";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
+import ComplaintsPage from "./pages/complaints/ComplaintsPage";
+import ComplaintDetailPage from "./pages/complaints/ComplaintDetailPage";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized";
@@ -83,6 +85,24 @@ const App = () => (
             element={
               <ProtectedRoute allowedRoles={['CITIZEN', 'LEADER', 'ADMIN']}>
                 <CitizenDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/complaints" 
+            element={
+              <ProtectedRoute allowedRoles={['CITIZEN']}>
+                <ComplaintsPage />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/complaints/:id" 
+            element={
+              <ProtectedRoute allowedRoles={['CITIZEN']}>
+                <ComplaintDetailPage />
               </ProtectedRoute>
             } 
           />

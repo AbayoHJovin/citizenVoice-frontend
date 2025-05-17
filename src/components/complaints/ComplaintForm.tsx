@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -40,8 +41,21 @@ interface ComplaintFormProps {
 const ComplaintForm: React.FC<ComplaintFormProps> = ({ isOpen, onClose, complaint }) => {
   const dispatch = useAppDispatch();
   const [images, setImages] = useState<File[]>([]);
+  const [existingImages, setExistingImages] = useState<{id: string, url: string}[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imagesToRemove, setImagesToRemove] = useState<string[]>([]);
   
+  // Set existing images when complaint changes
+  useEffect(() => {
+    if (complaint?.images && complaint.images.length > 0) {
+      setExistingImages(complaint.images.map(img => ({ id: img.id, url: img.url })));
+    } else {
+      setExistingImages([]);
+    }
+    // Reset images to remove when complaint changes
+    setImagesToRemove([]);
+  }, [complaint]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,10 +67,38 @@ const ComplaintForm: React.FC<ComplaintFormProps> = ({ isOpen, onClose, complain
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const fileArray = Array.from(e.target.files);
-      setImages(fileArray);
+      
+      // Validate file types
+      const validFiles = fileArray.filter(file => {
+        const isValid = file.type.startsWith('image/');
+        return isValid;
+      });
+      
+      // Limit to 5 images as per backend configuration
+      const limitedFiles = validFiles.slice(0, 5);
+      
+      // Show warning if files were filtered out
+      if (validFiles.length < fileArray.length) {
+        toast.warning('Some files were not added because they are not valid images.');
+      }
+      
+      // Show warning if files were limited
+      if (limitedFiles.length < validFiles.length) {
+        toast.warning(`Only the first 5 images were added. Maximum of 5 images allowed.`);
+      }
+      
+      setImages(limitedFiles);
     }
   };
   
+  const handleRemoveExistingImage = (imageId: string) => {
+    setImagesToRemove(prev => [...prev, imageId]);
+  };
+
+  const handleRemoveNewImage = (index: number) => {
+    setImages(prev => prev.filter((_, i) => i !== index));
+  };
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setIsSubmitting(true);
@@ -65,19 +107,27 @@ const ComplaintForm: React.FC<ComplaintFormProps> = ({ isOpen, onClose, complain
         title: values.title,
         description: values.description,
         images: images.length > 0 ? images : undefined,
+        imagesToRemove: imagesToRemove.length > 0 ? imagesToRemove : undefined
       };
       
       if (complaint) {
         // Update existing complaint
         await dispatch(updateComplaint({ id: complaint.id, data: formData })).unwrap();
+        toast.success('Complaint updated successfully!');
       } else {
         // Create new complaint
         await dispatch(createComplaint(formData)).unwrap();
+        toast.success('Complaint submitted successfully!');
       }
       
+      // Reset form state
+      setImages([]);
+      setImagesToRemove([]);
+      form.reset();
       onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to submit complaint:', error);
+      toast.error(error.response?.data?.message || 'Failed to submit complaint. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -149,14 +199,54 @@ const ComplaintForm: React.FC<ComplaintFormProps> = ({ isOpen, onClose, complain
                 You can attach up to 5 images to support your complaint.
               </p>
               
-              {images.length > 0 && (
-                <div className="mt-2">
-                  <p className="text-sm font-medium">Selected files:</p>
-                  <ul className="text-sm text-gray-500 list-disc pl-5">
-                    {images.map((file, index) => (
-                      <li key={index}>{file.name}</li>
+              {/* Display existing images */}
+              {existingImages.length > 0 && !imagesToRemove.includes(existingImages[0].id) && (
+                <div className="mt-4">
+                  <p className="text-sm font-medium mb-2">Current images:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {existingImages.filter(img => !imagesToRemove.includes(img.id)).map((img) => (
+                      <div key={img.id} className="relative group">
+                        <img 
+                          src={img.url} 
+                          alt="Attached image" 
+                          className="w-20 h-20 object-cover rounded border border-gray-200" 
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveExistingImage(img.id)}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                        >
+                          ×
+                        </button>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
+                </div>
+              )}
+              
+              {/* Display newly selected images */}
+              {images.length > 0 && (
+                <div className="mt-4">
+                  <p className="text-sm font-medium mb-2">New images to upload:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {images.map((file, index) => (
+                      <div key={index} className="relative group">
+                        <img 
+                          src={URL.createObjectURL(file)} 
+                          alt={`Preview ${index}`} 
+                          className="w-20 h-20 object-cover rounded border border-gray-200" 
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveNewImage(index)}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                        >
+                          ×
+                        </button>
+                        <p className="text-xs text-gray-500 mt-1 truncate max-w-[80px]">{file.name}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
