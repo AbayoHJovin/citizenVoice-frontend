@@ -47,7 +47,13 @@ export const authService = {
   },
   
   getCurrentUser: async () => {
-    const response = await api.get('/api/auth/me');
+    // Explicitly include credentials for this critical authentication request
+    const response = await api.get('/api/auth/me', {
+      withCredentials: true,
+      headers: {
+        'Cache-Control': 'no-cache',
+      }
+    });
     return response.data;
   },
   
