@@ -19,7 +19,25 @@ export interface Complaint {
     message: string;
     timestamp: string;
   };
+  responses?: {
+    id: string;
+    message: string;
+    complaintId: string;
+    responderId: string;
+    responder: {
+      id: string;
+      name: string;
+      email: string;
+      role: string;
+    };
+    createdAt: string;
+  }[];
   citizenId: string;
+  citizen?: {
+    id: string;
+    name: string;
+    email: string;
+  };
 }
 
 export interface CreateComplaintDto {

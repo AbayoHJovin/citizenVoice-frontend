@@ -17,6 +17,7 @@ import CitizenDashboard from "./pages/dashboard/CitizenDashboard";
 import LeaderDashboard from "./pages/dashboard/LeaderDashboard";
 import LeaderComplaints from "./pages/leader/LeaderComplaints";
 import LeaderComplaintDetail from "./pages/leader/LeaderComplaintDetail";
+import LeaderCitizens from "./pages/leader/LeaderCitizens";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import LeadersManagement from "./pages/admin/LeadersManagement";
 import AddLeaderPage from "./pages/admin/AddLeaderPage";
@@ -156,6 +157,15 @@ const App = () => (
             element={
               <ProtectedRoute allowedRoles={['LEADER']}>
                 <LeaderComplaintDetail />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/leader/citizens" 
+            element={
+              <ProtectedRoute allowedRoles={['LEADER']}>
+                <LeaderCitizens />
               </ProtectedRoute>
             } 
           />

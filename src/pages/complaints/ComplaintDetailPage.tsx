@@ -4,12 +4,16 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchComplaintById, deleteComplaint } from '../../features/complaints/complaintsSlice';
 import AppLayout from '../../components/layout/AppLayout';
 import { Button } from '../../components/ui/button';
-import { format } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
 import StatusBadge from '../../components/complaints/StatusBadge';
-import { AlertTriangle, ArrowLeft, Loader2, X } from 'lucide-react';
+import { AlertTriangle, ArrowLeft, Loader2, X, MessageSquare } from 'lucide-react';
 import ComplaintForm from '../../components/complaints/ComplaintForm';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '../../components/ui/dialog';
 import { toast } from 'react-toastify';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
+import { Separator } from '../../components/ui/separator';
+import { Alert, AlertDescription } from '../../components/ui/alert';
 
 const ComplaintDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -63,6 +67,28 @@ const ComplaintDetailPage: React.FC = () => {
     }
   };
   
+  // Format relative time (e.g. "2 hours ago")
+  const formatRelativeTime = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      return formatDistanceToNow(date, { addSuffix: true });
+    } catch (error) {
+      return dateString;
+    }
+  };
+  
+  // Get initials for avatar
+  const getInitials = (name?: string) => {
+    if (!name) return "UK"; // Unknown
+    
+    return name
+      .split(' ')
+      .map(part => part[0] || '')
+      .join('')
+      .toUpperCase()
+      .slice(0, 2) || "UK";
+  };
+  
   if (isLoading) {
     return (
       <AppLayout>
@@ -113,22 +139,22 @@ const ComplaintDetailPage: React.FC = () => {
               </div>
             </div>
             
-            {selectedComplaint.status === 'PENDING' && (
-              <div className="flex gap-2">
-                <Button 
-                  variant="outline" 
-                  onClick={handleEditComplaint}
-                >
-                  Edit Complaint
-                </Button>
+            <div className="flex gap-2">
+              {/* <Button 
+                variant="outline" 
+                onClick={handleEditComplaint}
+              >
+                Edit Complaint
+              </Button> */}
+              {selectedComplaint.status === 'PENDING' && (
                 <Button 
                   variant="destructive" 
                   onClick={handleDeleteClick}
                 >
                   Delete
                 </Button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
         
@@ -165,16 +191,59 @@ const ComplaintDetailPage: React.FC = () => {
             </div>
           )}
           
-          {/* Response section */}
-          {selectedComplaint.response && (
-            <div className="bg-[#020240]/5 p-4 rounded-md border border-[#020240]/10">
-              <h2 className="text-lg font-semibold mb-3 text-[#020240]">Response from Authority</h2>
-              <p className="text-gray-700">{selectedComplaint.response.message}</p>
-              <p className="text-sm text-gray-500 mt-2">
-                Received on {formatDate(selectedComplaint.response.timestamp)}
-              </p>
-            </div>
-          )}
+          {/* Responses/Comments Section */}
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <MessageSquare className="h-5 w-5" />
+                Comments & Responses
+              </CardTitle>
+              <CardDescription>
+                {selectedComplaint.responses && selectedComplaint.responses.length > 0
+                  ? `${selectedComplaint.responses.length} comment${selectedComplaint.responses.length !== 1 ? 's' : ''}`
+                  : 'No comments yet'}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {!selectedComplaint.responses || selectedComplaint.responses.length === 0 ? (
+                <div className="text-center py-8 text-muted-foreground">
+                  <MessageSquare className="mx-auto h-12 w-12 opacity-20 mb-2" />
+                  <p>No responses yet from leaders.</p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {selectedComplaint.responses.map((response) => (
+                    <div key={response.id} className="relative">
+                      <div className="flex items-start gap-4">
+                        <Avatar>
+                          <AvatarImage src="" alt={response.responder?.name || 'Unknown'} />
+                          <AvatarFallback className="bg-[#020240] text-white">
+                            {getInitials(response.responder?.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 space-y-1">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="font-medium">{response.responder?.name || 'Unknown Leader'}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {formatRelativeTime(response.createdAt)}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="rounded-md bg-muted/50 p-3">
+                            <p className="text-sm whitespace-pre-wrap">{response.message}</p>
+                          </div>
+                        </div>
+                      </div>
+                      {selectedComplaint.responses.indexOf(response) !== selectedComplaint.responses.length - 1 && (
+                        <Separator className="my-6" />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
           
           {/* Additional information */}
           <div className="border-t border-gray-200 pt-4 text-sm text-gray-500">

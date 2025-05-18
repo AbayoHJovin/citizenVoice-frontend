@@ -12,7 +12,8 @@ import {
   Users,
   Settings,
   Shield,
-  FileText
+  FileText,
+  UserCircle
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Button } from '../../components/ui/button';
@@ -107,6 +108,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               <>
                 <NavLink href="/leader/dashboard" icon={Home} label="Leader Dashboard" />
                 <NavLink href="/leader/complaints" icon={FileText} label="Complaints" />
+                <NavLink href="/leader/citizens" icon={UserCircle} label="My Citizens" />
                 <NavLink href="/leader/team" icon={Users} label="Team Management" />
                 <NavLink href="/profile" icon={User} label="My Profile" />
               </>
