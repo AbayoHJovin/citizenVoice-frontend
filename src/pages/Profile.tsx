@@ -10,7 +10,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
@@ -38,24 +37,13 @@ const profileFormSchema = z.object({
   village: z.string().optional(),
 });
 
-const passwordFormSchema = z.object({
-  currentPassword: z.string().min(1, "Current password is required"),
-  newPassword: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(6, "Confirm password is required"),
-}).refine((data) => data.newPassword === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
-
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
-type PasswordFormValues = z.infer<typeof passwordFormSchema>;
 
 const Profile = () => {
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const { toast } = useToast();
   const [isProfileUpdating, setIsProfileUpdating] = useState(false);
-  const [isPasswordUpdating, setIsPasswordUpdating] = useState(false);
 
   const profileForm = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
@@ -67,15 +55,6 @@ const Profile = () => {
       sector: user?.sector || "",
       cell: user?.cell || "",
       village: user?.village || "",
-    },
-  });
-
-  const passwordForm = useForm<PasswordFormValues>({
-    resolver: zodResolver(passwordFormSchema),
-    defaultValues: {
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
     },
   });
 
@@ -109,35 +88,6 @@ const Profile = () => {
     }
   };
 
-  const onPasswordSubmit = async (data: PasswordFormValues) => {
-    try {
-      setIsPasswordUpdating(true);
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      toast({
-        title: "Password updated",
-        description: "Your password has been changed successfully",
-      });
-      
-      passwordForm.reset({
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-      });
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to update password",
-      });
-    } finally {
-      setIsPasswordUpdating(false);
-    }
-  };
-  useEffect(()=>{
-    console.log("user",user)
-  },[user])
   return (
     <AppLayout>
       <div className="space-y-6">
@@ -276,85 +226,7 @@ const Profile = () => {
                 </form>
               </Form>
             </CardContent>
-          </Card>
-          
-          {/* Password Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Change Password</CardTitle>
-              <CardDescription>
-                Update your password to maintain security.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Form {...passwordForm}>
-                <form 
-                  onSubmit={passwordForm.handleSubmit(onPasswordSubmit)}
-                  className="space-y-4"
-                >
-                  <FormField
-                    control={passwordForm.control}
-                    name="currentPassword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Current Password</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="password" 
-                            {...field} 
-                            disabled={isPasswordUpdating}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={passwordForm.control}
-                    name="newPassword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>New Password</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="password" 
-                            {...field} 
-                            disabled={isPasswordUpdating}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={passwordForm.control}
-                    name="confirmPassword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Confirm New Password</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="password" 
-                            {...field} 
-                            disabled={isPasswordUpdating}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <div className="pt-4">
-                    <Button type="submit" disabled={isPasswordUpdating}>
-                      {isPasswordUpdating ? "Updating..." : "Change Password"}
-                    </Button>
-                  </div>
-                </form>
-              </Form>
-            </CardContent>
-          </Card>
-
-          {/* Address Information Card */}
-          
+          </Card>         
         </div>
       </div>
     </AppLayout>

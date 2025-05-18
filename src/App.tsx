@@ -15,6 +15,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import CitizenDashboard from "./pages/dashboard/CitizenDashboard";
 import LeaderDashboard from "./pages/dashboard/LeaderDashboard";
+import LeaderComplaints from "./pages/leader/LeaderComplaints";
+import LeaderComplaintDetail from "./pages/leader/LeaderComplaintDetail";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import LeadersManagement from "./pages/admin/LeadersManagement";
 import AddLeaderPage from "./pages/admin/AddLeaderPage";
@@ -130,12 +132,30 @@ const App = () => (
             } 
           />
           
-          {/* Protected routes - Leader */}
+          {/* Leader routes */}
           <Route 
             path="/leader/dashboard" 
             element={
-              <ProtectedRoute allowedRoles={['LEADER', 'ADMIN']}>
+              <ProtectedRoute allowedRoles={['LEADER']}>
                 <LeaderDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/leader/complaints" 
+            element={
+              <ProtectedRoute allowedRoles={['LEADER']}>
+                <LeaderComplaints />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/leader/complaints/:id" 
+            element={
+              <ProtectedRoute allowedRoles={['LEADER']}>
+                <LeaderComplaintDetail />
               </ProtectedRoute>
             } 
           />

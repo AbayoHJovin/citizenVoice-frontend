@@ -94,14 +94,12 @@ export const complaintService = {
       formData.append('description', complaintData.description);
     }
     
-    // Add new images if any
     if (complaintData.images && complaintData.images.length > 0) {
       complaintData.images.forEach((image) => {
         formData.append('images', image);
       });
     }
     
-    // Add image IDs to remove if any
     if (complaintData.imagesToRemove && complaintData.imagesToRemove.length > 0) {
       complaintData.imagesToRemove.forEach((imageId) => {
         formData.append('imagesToRemove', imageId);

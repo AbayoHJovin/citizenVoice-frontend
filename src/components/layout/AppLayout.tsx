@@ -106,6 +106,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             {user?.role === 'LEADER' && (
               <>
                 <NavLink href="/leader/dashboard" icon={Home} label="Leader Dashboard" />
+                <NavLink href="/leader/complaints" icon={FileText} label="Complaints" />
                 <NavLink href="/leader/team" icon={Users} label="Team Management" />
                 <NavLink href="/profile" icon={User} label="My Profile" />
               </>

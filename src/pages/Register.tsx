@@ -163,7 +163,7 @@ const Register = () => {
                     <FormLabel>Full Name</FormLabel>
                     <FormControl>
                       <Input 
-                        placeholder="John Doe" 
+                        placeholder="Enter your full name" 
                         {...field} 
                         disabled={isLoading}
                       />
