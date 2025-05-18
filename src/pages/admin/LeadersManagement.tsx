@@ -24,7 +24,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "../../components/ui/select";
-import { Eye } from "lucide-react";
+import { Eye, UserPlus } from "lucide-react";
 import AppLayout from "../../components/layout/AppLayout";
 import { Leader, fetchAllLeaders } from "../../services/adminService";
 import { getProvinces, getDistricts, getSectors, getCells, getVillages } from "../../utils/locationHelpers";
@@ -217,6 +217,11 @@ const LeadersManagement = () => {
     navigate(`/admin/leaders/${leaderId}`);
   };
   
+  // Handle add leader
+  const handleAddLeader = () => {
+    navigate('/admin/leaders/add');
+  };
+  
   // Clear all filters
   const clearFilters = () => {
     setSearchTerm("");
@@ -237,10 +242,21 @@ const LeadersManagement = () => {
       <div className="space-y-6">
         {/* Header */}
         <div className="bg-[#020240]/10 p-6 rounded-lg border border-[#020240]/20">
-          <h1 className="text-3xl font-bold tracking-tight text-[#020240]">Leaders Management</h1>
-          <p className="text-muted-foreground mt-2">
-            View and manage all leaders in the system
-          </p>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-[#020240]">Leaders Management</h1>
+              <p className="text-muted-foreground mt-2">
+                View and manage all leaders in the system
+              </p>
+            </div>
+            <Button 
+              onClick={handleAddLeader}
+              className="mt-4 md:mt-0 bg-[#020240] hover:bg-[#020240]/90 flex items-center gap-2"
+            >
+              <UserPlus className="h-4 w-4" />
+              Add Leader
+            </Button>
+          </div>
         </div>
         
         {/* Error message */}
@@ -412,6 +428,14 @@ const LeadersManagement = () => {
           <CardHeader>
             <div className="flex justify-between items-center">
               <CardTitle>Leaders ({filteredLeaders.length})</CardTitle>
+              <Button 
+                onClick={handleAddLeader}
+                className="bg-[#020240] hover:bg-[#020240]/90 flex items-center gap-2 md:hidden"
+                size="sm"
+              >
+                <UserPlus className="h-4 w-4" />
+                Add Leader
+              </Button>
             </div>
           </CardHeader>
           <CardContent>

@@ -1,17 +1,30 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { forgotPassword } from "../features/auth/authSlice";
-import { Button } from "../components/ui/button";
+import { KeyIcon, CheckCircle } from "lucide-react";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
 import { Input } from "../components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../components/ui/form";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../components/ui/form";
 import { Alert, AlertDescription } from "../components/ui/alert";
-import { KeyIcon, Mail } from "lucide-react";
+import { authService } from "../services/authService";
 import { useToast } from "../hooks/use-toast";
 
 const formSchema = z.object({
@@ -23,9 +36,8 @@ type FormData = z.infer<typeof formSchema>;
 const ForgotPassword = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-  const [emailSent, setEmailSent] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const dispatch = useAppDispatch();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -35,16 +47,17 @@ const ForgotPassword = () => {
   });
 
   const onSubmit = async (data: FormData) => {
-    setIsLoading(true);
-    setError(null);
-    
-    const result = await dispatch(forgotPassword(data.email));
-    
-    if (forgotPassword.fulfilled.match(result)) {
-      setEmailSent(true);
+    try {
+      setIsLoading(true);
+      setError(null);
+      await authService.forgotPassword(data.email);
+      setIsSuccess(true);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to send reset link. Please try again.');
+      console.error('Error sending reset link:', err);
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   };
 
   return (
@@ -63,14 +76,23 @@ const ForgotPassword = () => {
             </Alert>
           )}
 
-          {emailSent ? (
-            <div className="space-y-4">
-              <div className="flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mx-auto">
-                <Mail className="h-6 w-6 text-green-600" />
+          {isSuccess ? (
+            <div className="text-center py-6">
+              <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
+                <CheckCircle className="h-6 w-6 text-green-600" />
               </div>
-              <p className="text-center text-sm text-muted-foreground">
-                We've sent a password reset link to your email address. Please check your inbox and follow the instructions.
+              <h3 className="text-lg font-medium text-gray-900">Check your email</h3>
+              <p className="mt-2 text-sm text-gray-500">
+                We've sent a password reset link to your email address.
               </p>
+              <div className="mt-6">
+                <Link
+                  to="/login"
+                  className="text-sm font-medium text-primary hover:underline"
+                >
+                  Back to login
+                </Link>
+              </div>
             </div>
           ) : (
             <Form {...form}>

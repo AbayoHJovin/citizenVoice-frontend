@@ -41,13 +41,13 @@ export const authService = {
     return response.data;
   },
 
-  resetPassword: async (token: string, password: string) => {
-    const response = await api.post('/api/auth/reset-password', { token, password });
+  resetPassword: async (token: string, newPassword: string, confirmNewPassword: string) => {
+    console.log("Password",token,newPassword,confirmNewPassword)
+    const response = await api.post('/api/auth/reset-password', { token, newPassword, confirmNewPassword });
     return response.data;
   },
   
   getCurrentUser: async () => {
-    // Explicitly include credentials for this critical authentication request
     const response = await api.get('/api/auth/me', {
       withCredentials: true,
       headers: {
@@ -75,7 +75,7 @@ export const authService = {
   },
   
   refreshToken: async () => {
-    const response = await api.post('/api/auth/refresh');
+    const response = await api.post('/api/auth/me');
     return response.data;
   },
 

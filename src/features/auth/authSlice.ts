@@ -100,9 +100,10 @@ export const forgotPassword = createAsyncThunk(
 
 export const resetPassword = createAsyncThunk(
   'auth/resetPassword',
-  async ({ token, password }: { token: string; password: string }, { rejectWithValue }) => {
+  async ({ token, newPassword,confirmNewPassword  }: { token: string; newPassword: string,confirmNewPassword: string }, { rejectWithValue }) => {
+    console.log("Password",token,newPassword,confirmNewPassword)
     try {
-      const response = await authService.resetPassword(token, password);
+      const response = await authService.resetPassword(token, newPassword,confirmNewPassword);
       toast.success('Password reset successful! Please login with your new password.');
       return response;
     } catch (error: any) {

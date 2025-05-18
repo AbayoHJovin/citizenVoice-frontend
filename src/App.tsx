@@ -17,6 +17,8 @@ import CitizenDashboard from "./pages/dashboard/CitizenDashboard";
 import LeaderDashboard from "./pages/dashboard/LeaderDashboard";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import LeadersManagement from "./pages/admin/LeadersManagement";
+import AddLeaderPage from "./pages/admin/AddLeaderPage";
+import LeaderDetailPage from "./pages/admin/LeaderDetailPage";
 import ComplaintsPage from "./pages/complaints/ComplaintsPage";
 import ComplaintDetailPage from "./pages/complaints/ComplaintDetailPage";
 import CreateComplaintPage from "./pages/complaints/CreateComplaintPage";
@@ -153,6 +155,24 @@ const App = () => (
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
                 <LeadersManagement />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/admin/leaders/add" 
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <AddLeaderPage />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/admin/leaders/:id" 
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <LeaderDetailPage />
               </ProtectedRoute>
             } 
           />
