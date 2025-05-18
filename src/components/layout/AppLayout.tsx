@@ -114,7 +114,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             {user?.role === 'ADMIN' && (
               <>
                 <NavLink href="/admin/dashboard" icon={Home} label="Admin Dashboard" />
-                <NavLink href="/admin/users" icon={Users} label="User Management" />
+                <NavLink href="/admin/leaders" icon={Users} label="Leaders Management" />
                 <NavLink href="/admin/roles" icon={Shield} label="Role Management" />
                 <NavLink href="/admin/settings" icon={Settings} label="System Settings" />
                 <NavLink href="/profile" icon={User} label="My Profile" />

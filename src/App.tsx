@@ -16,6 +16,7 @@ import ResetPassword from "./pages/ResetPassword";
 import CitizenDashboard from "./pages/dashboard/CitizenDashboard";
 import LeaderDashboard from "./pages/dashboard/LeaderDashboard";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
+import LeadersManagement from "./pages/admin/LeadersManagement";
 import ComplaintsPage from "./pages/complaints/ComplaintsPage";
 import ComplaintDetailPage from "./pages/complaints/ComplaintDetailPage";
 import CreateComplaintPage from "./pages/complaints/CreateComplaintPage";
@@ -143,6 +144,15 @@ const App = () => (
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
                 <AdminDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/admin/leaders" 
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <LeadersManagement />
               </ProtectedRoute>
             } 
           />
