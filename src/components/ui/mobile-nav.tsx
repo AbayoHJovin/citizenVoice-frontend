@@ -72,7 +72,7 @@ export function MobileNav({ links, callToAction }: MobileNavProps) {
               >
                 <Button
                   variant="outline"
-                  className="border-white text-[#020240] bg-white  w-full"
+                  className="border-white text-[#020240] bg-white hover:bg-white/90 w-full"
                 >
                   {callToAction.secondary.label}
                 </Button>

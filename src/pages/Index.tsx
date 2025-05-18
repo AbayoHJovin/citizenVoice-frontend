@@ -41,7 +41,7 @@ const Index = () => {
           <div className="flex items-center space-x-4">
             <div className="hidden md:block">
               <Link to="/login">
-                <Button variant="outline" className="border-white text-white hover:bg-white hover:text-[#020240]">
+                <Button variant="outline" className="border-white text-[#020240]">
                   Log in
                 </Button>
               </Link>
@@ -85,7 +85,7 @@ const Index = () => {
           </div>
           <div className="md:w-1/2 flex justify-center">
             <img 
-              src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+              src="/hero.png" 
               alt="Digital platform"
               className="rounded-lg shadow-xl max-w-full h-auto" 
             />
