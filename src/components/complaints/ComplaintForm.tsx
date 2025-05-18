@@ -56,7 +56,7 @@ const ComplaintForm: React.FC<ComplaintFormProps> = ({ isOpen, onClose, complain
     setImagesToRemove([]);
   }, [complaint]);
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<z.infer<typeof formSchema>>({    
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: complaint?.title || '',
@@ -199,21 +199,22 @@ const ComplaintForm: React.FC<ComplaintFormProps> = ({ isOpen, onClose, complain
                 You can attach up to 5 images to support your complaint.
               </p>
               
-              {/* Display existing images */}
-              {existingImages.length > 0 && !imagesToRemove.includes(existingImages[0].id) && (
-                <div className="mt-4">
-                  <p className="text-sm font-medium mb-2">Current images:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {existingImages.filter(img => !imagesToRemove.includes(img.id)).map((img) => (
-                      <div key={img.id} className="relative group">
-                        <img 
-                          src={img.url} 
-                          alt="Attached image" 
-                          className="w-20 h-20 object-cover rounded border border-gray-200" 
-                        />
+              {images.length > 0 && (
+                <div className="mt-2">
+                  <p className="text-sm font-medium">Selected files:</p>
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    {images.map((file, index) => (
+                      <div key={index} className="relative group">
+                        <div className="w-16 h-16 border rounded overflow-hidden bg-gray-100">
+                          <img 
+                            src={URL.createObjectURL(file)} 
+                            alt={`Preview ${index}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
                         <button
                           type="button"
-                          onClick={() => handleRemoveExistingImage(img.id)}
+                          onClick={() => handleRemoveNewImage(index)}
                           className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
                         >
                           ×
@@ -224,27 +225,29 @@ const ComplaintForm: React.FC<ComplaintFormProps> = ({ isOpen, onClose, complain
                 </div>
               )}
               
-              {/* Display newly selected images */}
-              {images.length > 0 && (
+              {existingImages.length > 0 && !imagesToRemove.includes(existingImages[0].id) && (
                 <div className="mt-4">
-                  <p className="text-sm font-medium mb-2">New images to upload:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {images.map((file, index) => (
-                      <div key={index} className="relative group">
-                        <img 
-                          src={URL.createObjectURL(file)} 
-                          alt={`Preview ${index}`} 
-                          className="w-20 h-20 object-cover rounded border border-gray-200" 
-                        />
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveNewImage(index)}
-                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                        >
-                          ×
-                        </button>
-                        <p className="text-xs text-gray-500 mt-1 truncate max-w-[80px]">{file.name}</p>
-                      </div>
+                  <p className="text-sm font-medium">Existing images:</p>
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    {existingImages.map((img) => (
+                      !imagesToRemove.includes(img.id) && (
+                        <div key={img.id} className="relative group">
+                          <div className="w-16 h-16 border rounded overflow-hidden">
+                            <img 
+                              src={img.url} 
+                              alt="Existing attachment"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveExistingImage(img.id)}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      )
                     ))}
                   </div>
                 </div>
