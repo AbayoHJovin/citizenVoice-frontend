@@ -1,5 +1,6 @@
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import AppLayout from "../../components/layout/AppLayout";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -7,35 +8,25 @@ import { fetchUserComplaints } from "../../features/complaints/complaintsSlice";
 import { Complaint } from "../../services/complaintService";
 import ComplaintCard from "../../components/complaints/ComplaintCard";
 import EmptyState from "../../components/complaints/EmptyState";
-import ComplaintForm from "../../components/complaints/ComplaintForm";
 import { Button } from "../../components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
 
 const CitizenDashboard = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { user } = useAppSelector((state) => state.auth);
   const { complaints, isLoading } = useAppSelector((state) => state.complaints);
-  
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [selectedComplaint, setSelectedComplaint] = useState<Complaint | undefined>(undefined);
   
   useEffect(() => {
     dispatch(fetchUserComplaints());
   }, [dispatch]);
   
   const handleEditComplaint = (complaint: Complaint) => {
-    setSelectedComplaint(complaint);
-    setIsFormOpen(true);
+    navigate(`/complaints/edit/${complaint.id}`);
   };
   
   const handleNewComplaint = () => {
-    setSelectedComplaint(undefined);
-    setIsFormOpen(true);
-  };
-  
-  const handleCloseForm = () => {
-    setIsFormOpen(false);
-    setSelectedComplaint(undefined);
+    navigate('/complaints/create');
   };
   
   // Filter complaints by status
@@ -210,13 +201,6 @@ const CitizenDashboard = () => {
           )}
         </div>
       </div>
-      
-      {/* Complaint form dialog */}
-      <ComplaintForm 
-        isOpen={isFormOpen} 
-        onClose={handleCloseForm} 
-        complaint={selectedComplaint}
-      />
     </AppLayout>
   );
 };

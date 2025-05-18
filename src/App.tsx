@@ -18,6 +18,8 @@ import LeaderDashboard from "./pages/dashboard/LeaderDashboard";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import ComplaintsPage from "./pages/complaints/ComplaintsPage";
 import ComplaintDetailPage from "./pages/complaints/ComplaintDetailPage";
+import CreateComplaintPage from "./pages/complaints/CreateComplaintPage";
+import EditComplaintPage from "./pages/complaints/EditComplaintPage";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized";
@@ -94,6 +96,24 @@ const App = () => (
             element={
               <ProtectedRoute allowedRoles={['CITIZEN']}>
                 <ComplaintsPage />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/complaints/create" 
+            element={
+              <ProtectedRoute allowedRoles={['CITIZEN']}>
+                <CreateComplaintPage />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/complaints/edit/:id" 
+            element={
+              <ProtectedRoute allowedRoles={['CITIZEN']}>
+                <EditComplaintPage />
               </ProtectedRoute>
             } 
           />
