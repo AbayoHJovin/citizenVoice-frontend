@@ -70,3 +70,13 @@ export const getAdministrativeAreaString = (user: any): string => {
   
   return parts.join(', ');
 };
+
+export const changeComplaintStatus = async (complaintId: string, status: 'PENDING' | 'IN_PROGRESS' | 'RESOLVED' | 'REJECTED'): Promise<Complaint> => {
+  try {
+    const response = await axiosInstance.put(`/api/complaints/change-status/${complaintId}`, { status });
+    return response.data;
+  } catch (error) {
+    console.error('Error changing complaint status:', error);
+    throw new Error('Failed to update complaint status. Please try again.');
+  }
+};
