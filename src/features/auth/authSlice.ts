@@ -27,7 +27,7 @@ interface AuthState {
 
 const initialState: AuthState = {
   user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null,
-  isAuthenticated: !!localStorage.getItem('user'), // Now we determine authentication by user presence
+  isAuthenticated: !!localStorage.getItem('user'),
   isLoading: false,
   error: null,
 };
@@ -38,7 +38,6 @@ export const loginUser = createAsyncThunk(
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       const response = await authService.login(credentials);
-      // Only store user data in localStorage, tokens are in HTTP-only cookies
       localStorage.setItem('user', JSON.stringify(response.user));
       return response;
     } catch (error: any) {
@@ -54,7 +53,6 @@ export const registerUser = createAsyncThunk(
   async (credentials: RegisterCredentials, { rejectWithValue }) => {
     try {
       const response = await authService.register(credentials);
-      // Don't store token and user data since we're redirecting to login
       toast.success('Registration successful! Please login to continue.');
       return response;
     } catch (error: any) {
@@ -69,15 +67,11 @@ export const logoutUser = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      // Call the logout endpoint to clear cookies on the server side
       await authService.logout();
-      // Clear user data from localStorage
       localStorage.removeItem('user');
-      // Clear the auth check flag from sessionStorage
       sessionStorage.removeItem('authChecked');
       return null;
     } catch (error: any) {
-      // Even if the API call fails, we should still clear local storage and session storage
       localStorage.removeItem('user');
     }
   }
@@ -101,7 +95,6 @@ export const forgotPassword = createAsyncThunk(
 export const resetPassword = createAsyncThunk(
   'auth/resetPassword',
   async ({ token, newPassword,confirmNewPassword  }: { token: string; newPassword: string,confirmNewPassword: string }, { rejectWithValue }) => {
-    console.log("Password",token,newPassword,confirmNewPassword)
     try {
       const response = await authService.resetPassword(token, newPassword,confirmNewPassword);
       toast.success('Password reset successful! Please login with your new password.');
@@ -118,16 +111,12 @@ export const checkAuthStatus = createAsyncThunk(
   'auth/checkStatus',
   async (_, { rejectWithValue }) => {
     try {
-      // Verify authentication by fetching the current user
       const response = await authService.getCurrentUser();
-      
-      // The backend returns user data including location information
       const userData: User = {
-        id: '', // The ID isn't returned from /me endpoint
+        id: response.id,
         name: response.name,
         email: response.email,
         role: response.role as Role,
-        // Include location data if available
         province: response.province,
         district: response.district,
         sector: response.sector,
@@ -136,11 +125,9 @@ export const checkAuthStatus = createAsyncThunk(
         administrationScope: response.administrationScope
       };
       
-      // If successful, update localStorage with the latest user data
       localStorage.setItem('user', JSON.stringify(userData));
       return { user: userData };
     } catch (error: any) {
-      // If there's an error, clear user data
       localStorage.removeItem('user');
       return rejectWithValue('Session expired. Please login again.');
     }
@@ -162,12 +149,10 @@ export const updateProfile = createAsyncThunk(
     try {
       const response = await authService.updateProfile(profileData);
       
-      // Get current user from state
       const state = getState() as { auth: AuthState };
       const currentUser = state.auth.user;
       
       if (currentUser) {
-        // Update user in localStorage with new profile data
         const updatedUser: User = {
           ...currentUser,
           name: profileData.name,
@@ -196,7 +181,6 @@ const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    // Login cases
     builder
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
@@ -212,7 +196,6 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
       
-      // Register cases
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -227,13 +210,11 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
       
-      // Logout cases
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
       })
       
-      // Forgot password cases
       .addCase(forgotPassword.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -246,7 +227,6 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
       
-      // Reset password cases
       .addCase(resetPassword.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -259,7 +239,6 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
       
-      // Check auth status cases
       .addCase(checkAuthStatus.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -275,8 +254,7 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
       })
       
-      // Update profile cases
-      .addCase(updateProfile.pending, (state) => {
+        .addCase(updateProfile.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })

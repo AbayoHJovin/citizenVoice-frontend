@@ -116,6 +116,234 @@
       "password": "Ijambo ry'ibanga rigomba kuba rifite nibura inyuguti 6"
     }
   },
+  "forgotPassword": {
+    "title": "Kugarura ijambo ry'ibanga",
+    "subtitle": "Shyiramo imeri yawe maze tuzakoherereza ihuza ryo kugarura ijambo ry'ibanga",
+    "form": {
+      "email": {
+        "label": "Imeri",
+        "placeholder": "imeri.yawe@example.com"
+      }
+    },
+    "button": {
+      "send": "Ohereza ihuza",
+      "loading": "Kohereza..."
+    },
+    "success": {
+      "title": "Reba imeri yawe",
+      "message": "Twakoherereje ihuza ryo kugarura ijambo ry'ibanga kuri imeri yawe.",
+      "backToLogin": "Garuka ku kwinjira"
+    },
+    "footer": {
+      "rememberPassword": "Wibuka ijambo ry'ibanga?",
+      "signIn": "Injira"
+    },
+    "validation": {
+      "email": "Nyamuneka shyiramo imeri ikora"
+    }
+  },
+  "sidebar": {
+    "header": {
+      "title": "Urubuga",
+      "close": "Funga urubari"
+    },
+    "citizen": {
+      "dashboard": "Ikibaho",
+      "complaints": "Ibibazo",
+      "profile": "Umwirondoro Wanjye"
+    },
+    "leader": {
+      "dashboard": "Ikibaho cy'Umuyobozi",
+      "complaints": "Ibibazo",
+      "citizens": "Abaturage Banjye",
+      "profile": "Umwirondoro Wanjye"
+    },
+    "admin": {
+      "dashboard": "Ikibaho cy'Umuyobozi Mukuru",
+      "leaders": "Imicungire y'Abayobozi",
+      "profile": "Umwirondoro Wanjye"
+    },
+    "footer": {
+      "defaultUser": "Ukoresha",
+      "role": {
+        "citizen": "Umuturage",
+        "leader": "Umuyobozi",
+        "admin": "Umuyobozi Mukuru"
+      },
+      "logout": "Gusohoka"
+    }
+  },
+  "header": {
+    "openSidebar": "Fungura urubari",
+    "adminPortal": "Urubuga rw'Umuyobozi Mukuru",
+    "leaderPortal": "Urubuga rw'Ubuyobozi",
+    "citizenPortal": "Urubuga rw'Abaturage"
+  },
+  "toast": {
+    "logout": {
+      "title": "Usohotse neza",
+      "description": "Usohotse kuri konti yawe"
+    }
+  },
+  "citizenDashboard": {
+    "header": {
+      "title": "Ikibaho cy'Umuturage",
+      "welcome": "Murakaza neza,",
+      "location": "Aho uherereye",
+      "submitButton": "Tanga Ikibazo Gishya"
+    },
+    "stats": {
+      "total": {
+        "title": "Ibibazo Byose",
+        "subtitle": "Ibyatanzwe byose"
+      },
+      "pending": {
+        "title": "Bitegereje",
+        "subtitle": "Bitegereje gusuzumwa"
+      },
+      "inProgress": {
+        "title": "Biracyakurikiranwa",
+        "subtitle": "Biracyakurikiranwa"
+      },
+      "resolved": {
+        "title": "Byakemuwe",
+        "subtitle": "Byarangiye neza"
+      }
+    },
+    "complaints": {
+      "title": "Ibibazo Byawe",
+      "tabs": {
+        "all": "Byose",
+        "pending": "Bitegereje",
+        "inProgress": "Biracyakurikiranwa",
+        "resolved": "Byakemuwe",
+        "rejected": "Byanzwe"
+      }
+    }
+  },
+  "complaintCard": {
+    "submittedOn": "Cyatanzwe ku wa",
+    "attachments": "Imigereka",
+    "responseFromAuthority": "Igisubizo cy'ubuyobozi",
+    "receivedOn": "Cyakirwe ku wa",
+    "actions": {
+      "edit": "Hindura",
+      "delete": "Siba"
+    },
+    "deleteConfirmation": "Urashaka gusiba iki kibazo?"
+  },
+  "emptyState": {
+    "noComplaints": "Nta bibazo biriho",
+    "getStarted": "Tangira utange ikibazo cyawe cya mbere",
+    "submitButton": "Tanga Ikibazo Cyawe cya Mbere"
+  },
+  "statusBadge": {
+    "pending": "Gitegereje",
+    "inProgress": "Kiracyakurikiranwa",
+    "resolved": "Cyakemuwe",
+    "rejected": "Cyanzwe"
+  },
+  "createComplaint": {
+    "header": {
+      "title": "Tanga Ikibazo Gishya",
+      "description": "Nyamuneka tanga ibisobanuro birambuye ku kibazo cyawe. Gerageza kuba wumvikana neza kugira ngo dushobore gukemura ikibazo cyawe neza."
+    },
+    "validation": {
+      "title": {
+        "min": "Umutwe ugomba kuba nibura inyuguti 5",
+        "max": "Umutwe ugomba kuba munsi y'inyuguti 100"
+      },
+      "description": {
+        "min": "Ibisobanuro bigomba kuba nibura inyuguti 20",
+        "max": "Ibisobanuro bigomba kuba munsi y'inyuguti 1000"
+      }
+    },
+    "toast": {
+      "invalidImages": "Amashusho amwe ntabwo yongewe kuko atari amashusho yemewe.",
+      "maxImagesReached": "Amashusho 5 ya mbere niyo yongewe. Urugero rw'amashusho 5 rwemewe.",
+      "success": "Ikibazo cyoherejwe neza!",
+      "error": "Ikibazo ntikibashije koherezwa. Nyamuneka ongera ugerageze."
+    },
+    "form": {
+      "title": {
+        "label": "Umutwe w'Ikibazo",
+        "placeholder": "Urugero: Umuhanda wangiritse mu murenge wa Kigali",
+        "description": "Tanga umutwe muto kandi wumvikana ugaragaza ikibazo cyawe."
+      },
+      "description": {
+        "label": "Ibisobanuro Birambuye",
+        "placeholder": "Nyamuneka sobanura ikibazo cyawe mu buryo burambuye. Shyiramo amakuru afite akamaro nk'aho ikibazo kiri, itariki, n'abantu bireba.",
+        "description": "Tanga ibisobanuro birambuye by'ikibazo cyawe (nibura inyuguti 20)."
+      },
+      "images": {
+        "label": "Ongera Amashusho (Bishoboka)",
+        "description": "Ushobora kongera amashusho 5 yo gushyigikira ikibazo cyawe."
+      },
+      "selectedImages": "Amashusho Yatoranijwe",
+      "buttons": {
+        "cancel": "Kureka",
+        "submit": "Ohereza Ikibazo",
+        "submitting": "Kohereza..."
+      }
+    }
+  },
+  "profile": {
+    "validation": {
+      "name": "Izina rigomba kuba nibura inyuguti 2.",
+      "email": "Nyamuneka shyiramo imeri ikora."
+    },
+    "toast": {
+      "success": {
+        "title": "Umwirondoro wavuguruwe",
+        "description": "Amakuru y'umwirondoro wawe yavuguruwe neza"
+      },
+      "error": {
+        "title": "Ikosa",
+        "description": "Kuvugurura umwirondoro ntibyakunze"
+      },
+      "noChanges": {
+        "title": "Nta mpinduka",
+        "description": "Nta mpinduka zakozwe ku mwirondoro wawe"
+      }
+    },
+    "header": {
+      "title": "Umwirondoro Wanjye",
+      "description": "Cungira konte yawe n'ibyo ukunda."
+    },
+    "card": {
+      "title": "Amakuru y'Umwirondoro",
+      "description": "Vugurura amakuru yawe bwite."
+    },
+    "form": {
+      "name": {
+        "label": "Izina"
+      },
+      "email": {
+        "label": "Imeri",
+        "description": "Aderesi y'imeri yawe ntishobora guhindurwa."
+      },
+      "address": {
+        "title": "Amakuru y'Aho Utuye",
+        "province": "Intara",
+        "district": "Akarere",
+        "sector": "Umurenge",
+        "cell": "Akagari",
+        "village": "Umudugudu",
+        "selectProvince": "Hitamo intara",
+        "selectDistrict": "Hitamo akarere",
+        "selectSector": "Hitamo umurenge",
+        "selectCell": "Hitamo akagari",
+        "selectVillage": "Hitamo umudugudu",
+        "leaderRestriction": "Abayobozi ntibashobora guhindura aho batuye"
+      },
+      "buttons": {
+        "save": "Bika impinduka",
+        "saving": "Kubika...",
+        "edit": "Hindura Umwirondoro",
+        "cancel": "Kureka"
+      }
+    }
+  },
   "register": {
     "title": "Fungura konti",
     "subtitle": "Shyiramo amakuru yawe kugira ngo ufungure konti",

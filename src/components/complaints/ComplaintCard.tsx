@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Complaint } from '../../services/complaintService';
 import StatusBadge from './StatusBadge';
@@ -17,10 +18,11 @@ interface ComplaintCardProps {
 const ComplaintCard: React.FC<ComplaintCardProps> = ({ complaint, onEdit }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [isResponseOpen, setIsResponseOpen] = useState(false);
   
   const handleDelete = () => {
-    if (window.confirm('Are you sure you want to delete this complaint?')) {
+    if (window.confirm(t('complaintCard.deleteConfirmation'))) {
       dispatch(deleteComplaint(complaint.id));
     }
   };
@@ -50,7 +52,7 @@ const ComplaintCard: React.FC<ComplaintCardProps> = ({ complaint, onEdit }) => {
           <StatusBadge status={complaint.status} className="flex-shrink-0" />
         </div>
         <p className="text-xs text-gray-500">
-          Submitted on {formatDate(complaint.createdAt)}
+          {t('complaintCard.submittedOn')} {formatDate(complaint.createdAt)}
         </p>
       </CardHeader>
       
@@ -61,7 +63,7 @@ const ComplaintCard: React.FC<ComplaintCardProps> = ({ complaint, onEdit }) => {
         
         {complaint.images && complaint.images.length > 0 && (
           <div className="mt-3">
-            <p className="text-xs font-medium text-gray-500 mb-1">Attachments:</p>
+            <p className="text-xs font-medium text-gray-500 mb-1">{t('complaintCard.attachments')}:</p>
             <div className="flex flex-wrap gap-1.5">
               {complaint.images.slice(0, 5).map((image, index) => (
                 <div 
@@ -99,7 +101,7 @@ const ComplaintCard: React.FC<ComplaintCardProps> = ({ complaint, onEdit }) => {
                 size="sm" 
                 className="w-full flex justify-between text-xs font-medium text-[#020240] hover:bg-[#020240]/10"
               >
-                <span>Response from authority</span>
+                <span>{t('complaintCard.responseFromAuthority')}</span>
                 <span className="transition-transform duration-200">
                   {isResponseOpen ? '▲' : '▼'}
                 </span>
@@ -110,7 +112,7 @@ const ComplaintCard: React.FC<ComplaintCardProps> = ({ complaint, onEdit }) => {
                 {complaint.response.message}
               </div>
               <p className="text-xs text-gray-500 mt-1">
-                Received on {formatDate(complaint.response.timestamp)}
+                {t('complaintCard.receivedOn')} {formatDate(complaint.response.timestamp)}
               </p>
             </CollapsibleContent>
           </Collapsible>
@@ -125,7 +127,7 @@ const ComplaintCard: React.FC<ComplaintCardProps> = ({ complaint, onEdit }) => {
             onClick={() => onEdit ? onEdit(complaint) : navigate(`/complaints/edit/${complaint.id}`)}
             className="text-xs"
           >
-            Edit
+            {t('complaintCard.actions.edit')}
           </Button>
           <Button 
             variant="destructive" 
@@ -133,7 +135,7 @@ const ComplaintCard: React.FC<ComplaintCardProps> = ({ complaint, onEdit }) => {
             onClick={handleDelete}
             className="text-xs"
           >
-            Delete
+            {t('complaintCard.actions.delete')}
           </Button>
         </CardFooter>
       )}

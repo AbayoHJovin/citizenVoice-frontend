@@ -42,7 +42,6 @@ export const authService = {
   },
 
   resetPassword: async (token: string, newPassword: string, confirmNewPassword: string) => {
-    console.log("Password",token,newPassword,confirmNewPassword)
     const response = await api.post('/api/auth/reset-password', { token, newPassword, confirmNewPassword });
     return response.data;
   },
@@ -70,7 +69,29 @@ export const authService = {
     cell?: string;
     village?: string;
   }) => {
-    const response = await api.put('/api/auth/profile', profileData);
+    // Create the request data with address field structure as expected by the backend
+    const requestData: {
+      name: string;
+      address: {
+        province?: string;
+        district?: string;
+        sector?: string;
+        cell?: string;
+        village?: string;
+      };
+    } = {
+      name: profileData.name,
+      address: {}
+    };
+    
+    // Only add address fields if they are provided
+    if (profileData.province) requestData.address.province = profileData.province;
+    if (profileData.district) requestData.address.district = profileData.district;
+    if (profileData.sector) requestData.address.sector = profileData.sector;
+    if (profileData.cell) requestData.address.cell = profileData.cell;
+    if (profileData.village) requestData.address.village = profileData.village;
+    
+    const response = await api.put('/api/auth/update', requestData);
     return response.data;
   },
   

@@ -73,9 +73,9 @@ const ForgotPassword = () => {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Reset your password</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">{t('forgotPassword.title')}</CardTitle>
           <CardDescription className="text-center">
-            Enter your email address and we'll send you a link to reset your password
+            {t('forgotPassword.subtitle')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -90,16 +90,16 @@ const ForgotPassword = () => {
               <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
                 <CheckCircle className="h-6 w-6 text-green-600" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900">Check your email</h3>
+              <h3 className="text-lg font-medium text-gray-900">{t('forgotPassword.success.title')}</h3>
               <p className="mt-2 text-sm text-gray-500">
-                We've sent a password reset link to your email address.
+                {t('forgotPassword.success.message')}
               </p>
               <div className="mt-6">
                 <Link
                   to="/login"
                   className="text-sm font-medium text-primary hover:underline"
                 >
-                  Back to login
+                  {t('forgotPassword.success.backToLogin')}
                 </Link>
               </div>
             </div>
@@ -111,10 +111,10 @@ const ForgotPassword = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>{t('forgotPassword.form.email.label')}</FormLabel>
                       <FormControl>
                         <Input 
-                          placeholder="your.email@example.com" 
+                          placeholder={t('forgotPassword.form.email.placeholder')} 
                           {...field} 
                           disabled={isLoading}
                         />
@@ -131,12 +131,12 @@ const ForgotPassword = () => {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Sending...
+                      {t('forgotPassword.button.loading')}
                     </span>
                   ) : (
                     <span className="flex items-center">
                       <KeyIcon className="mr-2 h-4 w-4" />
-                      Send reset link
+                      {t('forgotPassword.button.send')}
                     </span>
                   )}
                 </Button>
@@ -146,9 +146,9 @@ const ForgotPassword = () => {
         </CardContent>
         <CardFooter className="flex flex-col">
           <div className="text-sm text-center">
-            Remember your password?{" "}
+            {t('forgotPassword.footer.rememberPassword')}{" "}
             <Link to="/login" className="text-primary hover:underline">
-              Sign in
+              {t('forgotPassword.footer.signIn')}
             </Link>
           </div>
         </CardFooter>

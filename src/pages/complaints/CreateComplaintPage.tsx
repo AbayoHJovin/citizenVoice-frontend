@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -20,22 +21,23 @@ import { Textarea } from '../../components/ui/textarea';
 import { useAppDispatch } from '../../redux/hooks';
 import { createComplaint } from '../../features/complaints/complaintsSlice';
 
-// Form validation schema
-const formSchema = z.object({
-  title: z.string()
-    .min(5, 'Title must be at least 5 characters')
-    .max(100, 'Title must be less than 100 characters'),
-  description: z.string()
-    .min(20, 'Description must be at least 20 characters')
-    .max(1000, 'Description must be less than 1000 characters'),
-});
-
 const CreateComplaintPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [images, setImages] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+
+  // Form validation schema with translations
+  const formSchema = z.object({
+    title: z.string()
+      .min(5, t('createComplaint.validation.title.min'))
+      .max(100, t('createComplaint.validation.title.max')),
+    description: z.string()
+      .min(20, t('createComplaint.validation.description.min'))
+      .max(1000, t('createComplaint.validation.description.max')),
+  });
 
   // Initialize form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -62,12 +64,12 @@ const CreateComplaintPage: React.FC = () => {
       
       // Show warning if files were filtered out
       if (validFiles.length < fileArray.length) {
-        toast.warning('Some files were not added because they are not valid images.');
+        toast.warning(t('createComplaint.toast.invalidImages'));
       }
       
       // Show warning if files were limited
       if (limitedFiles.length < validFiles.length) {
-        toast.warning(`Only the first 5 images were added. Maximum of 5 images allowed.`);
+        toast.warning(t('createComplaint.toast.maxImagesReached'));
       }
       
       setImages(limitedFiles);
@@ -96,7 +98,7 @@ const CreateComplaintPage: React.FC = () => {
       };
       
       await dispatch(createComplaint(formData)).unwrap();
-      toast.success('Complaint submitted successfully!');
+      toast.success(t('createComplaint.toast.success'));
       
       // Clean up preview URLs
       previewUrls.forEach(url => URL.revokeObjectURL(url));
@@ -105,7 +107,7 @@ const CreateComplaintPage: React.FC = () => {
       navigate('/dashboard');
     } catch (error: any) {
       console.error('Failed to submit complaint:', error);
-      toast.error(error.response?.data?.message || 'Failed to submit complaint. Please try again.');
+      toast.error(error.response?.data?.message || t('createComplaint.toast.error'));
     } finally {
       setIsSubmitting(false);
     }
@@ -115,9 +117,9 @@ const CreateComplaintPage: React.FC = () => {
     <AppLayout>
       <div className="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#020240]">Submit New Complaint</h1>
+          <h1 className="text-3xl font-bold text-[#020240]">{t('createComplaint.header.title')}</h1>
           <p className="text-gray-600 mt-2">
-            Please provide details about your complaint. Be as specific as possible to help us address your concerns effectively.
+            {t('createComplaint.header.description')}
           </p>
         </div>
 
@@ -129,16 +131,16 @@ const CreateComplaintPage: React.FC = () => {
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-lg font-medium">Complaint Title</FormLabel>
+                    <FormLabel className="text-lg font-medium">{t('createComplaint.form.title.label')}</FormLabel>
                     <FormControl>
                       <Input 
-                        placeholder="E.g., Road damage in Kigali sector" 
+                        placeholder={t('createComplaint.form.title.placeholder')} 
                         className="h-12" 
                         {...field} 
                       />
                     </FormControl>
                     <FormDescription>
-                      Provide a clear and concise title that summarizes your complaint.
+                      {t('createComplaint.form.title.description')}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -150,16 +152,16 @@ const CreateComplaintPage: React.FC = () => {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-lg font-medium">Detailed Description</FormLabel>
+                    <FormLabel className="text-lg font-medium">{t('createComplaint.form.description.label')}</FormLabel>
                     <FormControl>
                       <Textarea 
-                        placeholder="Please describe your complaint in detail. Include relevant information such as location, date, and people involved." 
+                        placeholder={t('createComplaint.form.description.placeholder')} 
                         className="min-h-[200px] resize-y" 
                         {...field} 
                       />
                     </FormControl>
                     <FormDescription>
-                      Provide a detailed description of your complaint (minimum 20 characters).
+                      {t('createComplaint.form.description.description')}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -168,7 +170,7 @@ const CreateComplaintPage: React.FC = () => {
               
               <div className="space-y-2">
                 <FormLabel className="text-lg font-medium" htmlFor="images">
-                  Attach Images (Optional)
+                  {t('createComplaint.form.images.label')}
                 </FormLabel>
                 <Input 
                   id="images" 
@@ -179,13 +181,13 @@ const CreateComplaintPage: React.FC = () => {
                   className="h-12"
                 />
                 <FormDescription>
-                  You can attach up to 5 images to support your complaint.
+                  {t('createComplaint.form.images.description')}
                 </FormDescription>
               </div>
               
               {previewUrls.length > 0 && (
                 <div className="mt-4">
-                  <h3 className="text-md font-medium mb-2">Selected Images:</h3>
+                  <h3 className="text-md font-medium mb-2">{t('createComplaint.form.selectedImages')}:</h3>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                     {previewUrls.map((url, index) => (
                       <div key={index} className="relative group">
@@ -216,14 +218,14 @@ const CreateComplaintPage: React.FC = () => {
                   onClick={() => navigate('/dashboard')}
                   disabled={isSubmitting}
                 >
-                  Cancel
+                  {t('createComplaint.form.buttons.cancel')}
                 </Button>
                 <Button 
                   type="submit" 
                   disabled={isSubmitting}
                   className="bg-[#020240] hover:bg-[#020240]/90 px-8"
                 >
-                  {isSubmitting ? 'Submitting...' : 'Submit Complaint'}
+                  {isSubmitting ? t('createComplaint.form.buttons.submitting') : t('createComplaint.form.buttons.submit')}
                 </Button>
               </div>
             </form>

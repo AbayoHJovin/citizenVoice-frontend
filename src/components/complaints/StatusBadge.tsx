@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 type StatusType = 'PENDING' | 'IN_PROGRESS' | 'RESOLVED' | 'REJECTED';
 
@@ -8,27 +9,28 @@ interface StatusBadgeProps {
 }
 
 const StatusBadge: React.FC<StatusBadgeProps> = ({ status, className }) => {
+  const { t } = useTranslation();
   const getStatusConfig = (status: StatusType) => {
     switch (status) {
       case 'PENDING':
         return {
           color: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-          label: 'Pending'
+          label: t('statusBadge.pending')
         };
       case 'IN_PROGRESS':
         return {
           color: 'bg-blue-100 text-blue-800 border-blue-200',
-          label: 'In Progress'
+          label: t('statusBadge.inProgress')
         };
       case 'RESOLVED':
         return {
           color: 'bg-green-100 text-green-800 border-green-200',
-          label: 'Resolved'
+          label: t('statusBadge.resolved')
         };
       case 'REJECTED':
         return {
           color: 'bg-red-100 text-red-800 border-red-200',
-          label: 'Rejected'
+          label: t('statusBadge.rejected')
         };
       default:
         return {

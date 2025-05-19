@@ -3,6 +3,7 @@ import { ReactNode, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { logoutUser } from '../../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { 
   LogOut, 
   Menu, 
@@ -18,6 +19,7 @@ import {
 import { cn } from '../../lib/utils';
 import { Button } from '../../components/ui/button';
 import { useToast } from '../../hooks/use-toast';
+import LanguageSwitcher from '../../components/ui/language-switcher';
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -29,12 +31,13 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     dispatch(logoutUser());
     toast({
-      title: 'Logged out successfully',
-      description: 'You have been logged out of your account',
+      title: t('toast.logout.title'),
+      description: t('toast.logout.description'),
     });
     navigate('/login');
   };
@@ -82,7 +85,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         <div className="flex flex-col h-full">
           {/* Sidebar header */}
           <div className="flex items-center justify-between h-16 px-4 border-b">
-            <h2 className="text-lg font-semibold">Portal</h2>
+            <h2 className="text-lg font-semibold">{t('sidebar.header.title')}</h2>
             <Button 
               variant="ghost" 
               size="icon" 
@@ -90,7 +93,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               onClick={closeSidebar}
             >
               <X className="h-5 w-5" />
-              <span className="sr-only">Close sidebar</span>
+              <span className="sr-only">{t('sidebar.header.close')}</span>
             </Button>
           </div>
 
@@ -98,26 +101,26 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           <nav className="flex-1 overflow-y-auto p-4 space-y-1.5">
             {user?.role === 'CITIZEN' && (
               <>
-                <NavLink href="/dashboard" icon={Home} label="Dashboard" />
-                <NavLink href="/complaints" icon={FileText} label="Complaints" />
-                <NavLink href="/profile" icon={User} label="My Profile" />
+                <NavLink href="/dashboard" icon={Home} label={t('sidebar.citizen.dashboard')} />
+                <NavLink href="/complaints" icon={FileText} label={t('sidebar.citizen.complaints')} />
+                <NavLink href="/profile" icon={User} label={t('sidebar.citizen.profile')} />
               </>
             )}
             
             {user?.role === 'LEADER' && (
               <>
-                <NavLink href="/leader/dashboard" icon={Home} label="Leader Dashboard" />
-                <NavLink href="/leader/complaints" icon={FileText} label="Complaints" />
-                <NavLink href="/leader/citizens" icon={UserCircle} label="My Citizens" />
-                <NavLink href="/profile" icon={User} label="My Profile" />
+                <NavLink href="/leader/dashboard" icon={Home} label={t('sidebar.leader.dashboard')} />
+                <NavLink href="/leader/complaints" icon={FileText} label={t('sidebar.leader.complaints')} />
+                <NavLink href="/leader/citizens" icon={UserCircle} label={t('sidebar.leader.citizens')} />
+                <NavLink href="/profile" icon={User} label={t('sidebar.leader.profile')} />
               </>
             )}
             
             {user?.role === 'ADMIN' && (
               <>
-                <NavLink href="/admin/dashboard" icon={Home} label="Admin Dashboard" />
-                <NavLink href="/admin/leaders" icon={Users} label="Leaders Management" />
-                <NavLink href="/profile" icon={User} label="My Profile" />
+                <NavLink href="/admin/dashboard" icon={Home} label={t('sidebar.admin.dashboard')} />
+                <NavLink href="/admin/leaders" icon={Users} label={t('sidebar.admin.leaders')} />
+                <NavLink href="/profile" icon={User} label={t('sidebar.admin.profile')} />
               </>
             )}
           </nav>
@@ -129,8 +132,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                 {user?.name?.charAt(0) || "U"}
               </div>
               <div>
-                <p className="text-sm font-medium">{user?.name || "User"}</p>
-                <p className="text-xs text-muted-foreground">{user?.role}</p>
+                <p className="text-sm font-medium">{user?.name || t('sidebar.footer.defaultUser')}</p>
+                <p className="text-xs text-muted-foreground">{t(`sidebar.footer.role.${user?.role?.toLowerCase()}`)}</p>
               </div>
             </div>
             <Button 
@@ -139,7 +142,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               onClick={handleLogout}
             >
               <LogOut className="h-4 w-4 mr-2" />
-              Log out
+              {t('sidebar.footer.logout')}
             </Button>
           </div>
         </div>
@@ -148,21 +151,26 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       {/* Main content */}
       <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden relative">
         {/* Header */}
-        <header className="h-16 border-b flex items-center px-4">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="lg:hidden"
-            onClick={toggleSidebar}
-          >
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Open sidebar</span>
-          </Button>
-          <h1 className="text-lg font-medium ml-2 lg:ml-0">
-            {user?.role === 'ADMIN' ? 'Admin Portal' : 
-             user?.role === 'LEADER' ? 'Leadership Portal' : 
-             'Citizen Portal'}
-          </h1>
+        <header className="h-16 border-b flex items-center justify-between px-4">
+          <div className="flex items-center">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="lg:hidden"
+              onClick={toggleSidebar}
+            >
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">{t('header.openSidebar')}</span>
+            </Button>
+            <h1 className="text-lg font-medium ml-2 lg:ml-0">
+              {user?.role === 'ADMIN' ? t('header.adminPortal') : 
+               user?.role === 'LEADER' ? t('header.leaderPortal') : 
+               t('header.citizenPortal')}
+            </h1>
+          </div>
+          <div className="flex items-center">
+            <LanguageSwitcher />
+          </div>
         </header>
 
         {/* Page content */}
