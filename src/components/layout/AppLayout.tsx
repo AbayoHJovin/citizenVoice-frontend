@@ -75,7 +75,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       {/* Sidebar */}
       <aside 
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 bg-card border-r transform transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:z-0",
+          "fixed inset-y-0 left-0 z-50 w-64 bg-card border-r transform transition-transform duration-200 ease-in-out lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:z-30",
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -109,7 +109,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                 <NavLink href="/leader/dashboard" icon={Home} label="Leader Dashboard" />
                 <NavLink href="/leader/complaints" icon={FileText} label="Complaints" />
                 <NavLink href="/leader/citizens" icon={UserCircle} label="My Citizens" />
-                <NavLink href="/leader/team" icon={Users} label="Team Management" />
                 <NavLink href="/profile" icon={User} label="My Profile" />
               </>
             )}
@@ -118,8 +117,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               <>
                 <NavLink href="/admin/dashboard" icon={Home} label="Admin Dashboard" />
                 <NavLink href="/admin/leaders" icon={Users} label="Leaders Management" />
-                <NavLink href="/admin/roles" icon={Shield} label="Role Management" />
-                <NavLink href="/admin/settings" icon={Settings} label="System Settings" />
                 <NavLink href="/profile" icon={User} label="My Profile" />
               </>
             )}
@@ -149,7 +146,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       </aside>
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden">
+      <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden relative">
         {/* Header */}
         <header className="h-16 border-b flex items-center px-4">
           <Button 

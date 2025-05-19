@@ -198,11 +198,13 @@ const LeaderDashboard = () => {
         {/* Summary Statistics Cards */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {/* Total Complaints Card */}
-          <Card className="overflow-hidden transition-all hover:shadow-md">
+          <Card className="overflow-hidden transition-all hover:shadow-md border-l-4 border-l-[#020240]">
             <CardHeader className="pb-2 bg-[#020240]/5">
               <div className="flex justify-between items-center">
-                <CardTitle className="text-sm font-medium">Total Complaints</CardTitle>
-                <BarChart3 className="h-4 w-4 text-[#020240]" />
+                <CardTitle className="text-sm font-medium flex items-center">
+                  <BarChart3 className="h-4 w-4 text-[#020240] mr-2" />
+                  Total Complaints
+                </CardTitle>
               </div>
               <CardDescription>All statuses</CardDescription>
             </CardHeader>
