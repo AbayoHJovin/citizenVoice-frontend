@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { registerUser } from "../features/auth/authSlice";
 import { Button } from "../components/ui/button";
@@ -16,31 +17,38 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { getProvinces, getDistricts, getSectors, getCells, getVillages } from "../utils/locationHelpers";
 
-const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(6, "Confirm password is required"),
-  province: z.string().min(1, "Province is requireds"),
-  district: z.string().min(1, "District is required"),
-  sector: z.string().min(1, "Sector is required"),
-  cell: z.string().min(1, "Cell is required"),
-  village: z.string().min(1, "Village is required"),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
-
-type FormData = z.infer<typeof formSchema>;
+// Create a function to generate the form schema with translations
+const createFormSchema = (t: (key: string) => string) => {
+  return z.object({
+    name: z.string().min(2, t('register.validation.name')),
+    email: z.string().email(t('register.validation.email')),
+    password: z.string().min(6, t('register.validation.password')),
+    confirmPassword: z.string().min(6, t('register.validation.confirmPassword')),
+    province: z.string().min(1, t('register.validation.province')),
+    district: z.string().min(1, t('register.validation.district')),
+    sector: z.string().min(1, t('register.validation.sector')),
+    cell: z.string().min(1, t('register.validation.cell')),
+    village: z.string().min(1, t('register.validation.village')),
+  }).refine((data) => data.password === data.confirmPassword, {
+    message: t('register.validation.passwordsMatch'),
+    path: ["confirmPassword"],
+  });
+};
 
 const Register = () => {
+  const { t } = useTranslation();
+  
+  // Create the form schema with the current translations
+  const formSchema = createFormSchema(t);
+  
+  // Define the form data type
+  type FormData = z.infer<typeof formSchema>;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { isLoading, error } = useAppSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
-  // State for location dropdowns
   const [provinces] = useState<string[]>(getProvinces());
   const [districts, setDistricts] = useState<string[]>([]);
   const [sectors, setSectors] = useState<string[]>([]);
@@ -62,13 +70,11 @@ const Register = () => {
     },
   });
   
-  // Watch for changes in the location fields
   const watchProvince = form.watch("province");
   const watchDistrict = form.watch("district");
   const watchSector = form.watch("sector");
   const watchCell = form.watch("cell");
   
-  // Update districts when province changes
   useEffect(() => {
     if (watchProvince) {
       const newDistricts = getDistricts(watchProvince);
@@ -83,7 +89,6 @@ const Register = () => {
     }
   }, [watchProvince, form]);
   
-  // Update sectors when district changes
   useEffect(() => {
     if (watchProvince && watchDistrict) {
       const newSectors = getSectors(watchProvince, watchDistrict);
@@ -96,7 +101,6 @@ const Register = () => {
     }
   }, [watchProvince, watchDistrict, form]);
   
-  // Update cells when sector changes
   useEffect(() => {
     if (watchProvince && watchDistrict && watchSector) {
       const newCells = getCells(watchProvince, watchDistrict, watchSector);
@@ -107,7 +111,6 @@ const Register = () => {
     }
   }, [watchProvince, watchDistrict, watchSector, form]);
   
-  // Update villages when cell changes
   useEffect(() => {
     if (watchProvince && watchDistrict && watchSector && watchCell) {
       const newVillages = getVillages(watchProvince, watchDistrict, watchSector, watchCell);
@@ -132,18 +135,17 @@ const Register = () => {
     }));
     
     if (registerUser.fulfilled.match(result)) {
-      // Redirect to login page after successful registration
       navigate("/login");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-4xl">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Create an account</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">{t('register.title')}</CardTitle>
           <CardDescription className="text-center">
-            Enter your information to create an account
+            {t('register.subtitle')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -160,10 +162,10 @@ const Register = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Full Name</FormLabel>
+                    <FormLabel>{t('register.form.name.label')}</FormLabel>
                     <FormControl>
                       <Input 
-                        placeholder="Enter your full name" 
+                        placeholder={t('register.form.name.placeholder')} 
                         {...field} 
                         disabled={isLoading}
                       />
@@ -178,10 +180,11 @@ const Register = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t('register.form.email.label')}</FormLabel>
                     <FormControl>
                       <Input 
-                        placeholder="your.email@example.com" 
+                        type="email"
+                        placeholder={t('register.form.email.placeholder')} 
                         {...field} 
                         disabled={isLoading}
                       />
@@ -196,12 +199,12 @@ const Register = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t('register.form.password.label')}</FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input 
                           type={showPassword ? "text" : "password"}
-                          placeholder="******" 
+                          placeholder={t('register.form.password.placeholder')} 
                           {...field} 
                           disabled={isLoading}
                         />
@@ -218,7 +221,7 @@ const Register = () => {
                             <Eye className="h-4 w-4" />
                           )}
                           <span className="sr-only">
-                            {showPassword ? "Hide password" : "Show password"}
+                            {showPassword ? t('register.form.password.hide') : t('register.form.password.show')}
                           </span>
                         </Button>
                       </div>
@@ -233,12 +236,12 @@ const Register = () => {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
+                    <FormLabel>{t('register.form.confirmPassword.label')}</FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input 
                           type={showConfirmPassword ? "text" : "password"}
-                          placeholder="******" 
+                          placeholder={t('register.form.confirmPassword.placeholder')} 
                           {...field} 
                           disabled={isLoading}
                         />
@@ -255,7 +258,7 @@ const Register = () => {
                             <Eye className="h-4 w-4" />
                           )}
                           <span className="sr-only">
-                            {showConfirmPassword ? "Hide password" : "Show password"}
+                            {showConfirmPassword ? t('register.form.password.hide') : t('register.form.password.show')}
                           </span>
                         </Button>
                       </div>
@@ -266,7 +269,7 @@ const Register = () => {
               />
 
               <div className="pt-2 pb-1">
-                <h3 className="text-sm font-medium">Address Information</h3>
+                <h3 className="text-sm font-medium">{t('register.form.address.title')}</h3>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -275,7 +278,7 @@ const Register = () => {
                   name="province"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Province</FormLabel>
+                      <FormLabel>{t('register.form.province.label')}</FormLabel>
                       <Select
                         disabled={isLoading}
                         onValueChange={field.onChange}
@@ -283,7 +286,7 @@ const Register = () => {
                       >
                         <FormControl>
                           <SelectTrigger className="bg-white">
-                            <SelectValue placeholder="Select a province" />
+                            <SelectValue placeholder={t('register.form.province.placeholder')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -304,7 +307,7 @@ const Register = () => {
                   name="district"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>District</FormLabel>
+                      <FormLabel>{t('register.form.district.label')}</FormLabel>
                       <Select
                         disabled={isLoading || !watchProvince}
                         onValueChange={field.onChange}
@@ -312,7 +315,7 @@ const Register = () => {
                       >
                         <FormControl>
                           <SelectTrigger className="bg-white">
-                            <SelectValue placeholder="Select a district" />
+                            <SelectValue placeholder={t('register.form.district.placeholder')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -335,7 +338,7 @@ const Register = () => {
                   name="sector"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Sector</FormLabel>
+                      <FormLabel>{t('register.form.sector.label')}</FormLabel>
                       <Select
                         disabled={isLoading || !watchDistrict}
                         onValueChange={field.onChange}
@@ -343,7 +346,7 @@ const Register = () => {
                       >
                         <FormControl>
                           <SelectTrigger className="bg-white">
-                            <SelectValue placeholder="Select a sector" />
+                            <SelectValue placeholder={t('register.form.sector.placeholder')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -364,7 +367,7 @@ const Register = () => {
                   name="cell"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Cell</FormLabel>
+                      <FormLabel>{t('register.form.cell.label')}</FormLabel>
                       <Select
                         disabled={isLoading || !watchSector}
                         onValueChange={field.onChange}
@@ -372,7 +375,7 @@ const Register = () => {
                       >
                         <FormControl>
                           <SelectTrigger className="bg-white">
-                            <SelectValue placeholder="Select a cell" />
+                            <SelectValue placeholder={t('register.form.cell.placeholder')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -393,7 +396,7 @@ const Register = () => {
                   name="village"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Village</FormLabel>
+                      <FormLabel>{t('register.form.village.label')}</FormLabel>
                       <Select
                         disabled={isLoading || !watchCell}
                         onValueChange={field.onChange}
@@ -401,7 +404,7 @@ const Register = () => {
                       >
                         <FormControl>
                           <SelectTrigger className="bg-white">
-                            <SelectValue placeholder="Select a village" />
+                            <SelectValue placeholder={t('register.form.village.placeholder')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -425,12 +428,12 @@ const Register = () => {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Registering...
+                    {t('register.button.loading')}
                   </span>
                 ) : (
                   <span className="flex items-center">
                     <UserPlus className="mr-2 h-4 w-4" />
-                    Register
+                    {t('register.button.register')}
                   </span>
                 )}
               </Button>
@@ -439,9 +442,9 @@ const Register = () => {
         </CardContent>
         <CardFooter className="flex flex-col">
           <div className="text-sm text-center">
-            Already have an account?{" "}
+            {t('register.footer.haveAccount')}{" "}
             <Link to="/login" className="text-primary hover:underline">
-              Sign in
+              {t('register.footer.signIn')}
             </Link>
           </div>
         </CardFooter>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 import { KeyIcon, CheckCircle } from "lucide-react";
 
 import {
@@ -27,13 +28,21 @@ import { Alert, AlertDescription } from "../components/ui/alert";
 import { authService } from "../services/authService";
 import { useToast } from "../hooks/use-toast";
 
-const formSchema = z.object({
-  email: z.string().email("Please enter a valid email"),
-});
-
-type FormData = z.infer<typeof formSchema>;
+// Create a function to generate the form schema with translations
+const createFormSchema = (t: (key: string) => string) => {
+  return z.object({
+    email: z.string().email(t('forgotPassword.validation.email')),
+  });
+};
 
 const ForgotPassword = () => {
+  const { t } = useTranslation();
+  
+  // Create the form schema with the current translations
+  const formSchema = createFormSchema(t);
+  
+  // Define the form data type
+  type FormData = z.infer<typeof formSchema>;
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);

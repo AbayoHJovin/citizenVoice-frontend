@@ -1,0 +1,186 @@
+{
+  "navbar": {
+    "home": "Home",
+    "features": "Features",
+    "howItWorks": "How It Works",
+    "login": "Log in",
+    "getStarted": "Get Started",
+    "dashboard": "Dashboard",
+    "complaints": "Complaints",
+    "profile": "My Profile",
+    "logout": "Log out"
+  },
+  "hero": {
+    "title": "Bridging Citizens and Government",
+    "subtitle": "A streamlined platform for citizens to voice concerns and leaders to respond effectively.",
+    "signUp": "Sign Up",
+    "learnMore": "Learn More"
+  },
+  "features": {
+    "title": "Key Features",
+    "subtitle": "Discover how CitizenVoice empowers communities",
+    "feature1": {
+      "title": "Voice Your Concerns",
+      "description": "Submit complaints and track their progress from submission to resolution."
+    },
+    "feature2": {
+      "title": "Transparent Tracking",
+      "description": "Monitor the status of your complaints with real-time updates and notifications."
+    },
+    "feature3": {
+      "title": "Secure & Private",
+      "description": "Your data is protected with enterprise-grade security and privacy measures."
+    }
+  },
+  "howItWorks": {
+    "title": "How It Works",
+    "subtitle": "Simple process from submission to resolution",
+    "step1": {
+      "title": "Register & Submit",
+      "description": "Create an account and submit your complaint with supporting details and images."
+    },
+    "step2": {
+      "title": "Review & Processing",
+      "description": "Local leaders review your submission and begin addressing your concerns."
+    },
+    "step3": {
+      "title": "Resolution & Updates",
+      "description": "Receive updates as your complaint progresses and is ultimately resolved."
+    }
+  },
+  "stats": {
+    "issuesResolved": "Issues Resolved",
+    "resolutionRate": "Resolution Rate",
+    "responseTime": "Average Response Time"
+  },
+  "cta": {
+    "title": "Ready to Get Started?",
+    "subtitle": "Join our platform today and be part of the solution in your community.",
+    "registerButton": "Register Now",
+    "loginButton": "Login"
+  },
+  "footer": {
+    "description": "Connecting citizens with local government to create better communities through effective communication and problem solving.",
+    "copyright": "© 2025 CitizenVoice. All rights reserved.",
+    "quickLinks": {
+      "title": "Quick Links",
+      "home": "Home",
+      "features": "Features",
+      "howItWorks": "How It Works",
+      "login": "Login",
+      "register": "Register"
+    },
+    "legal": {
+      "title": "Legal",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "cookies": "Cookie Policy"
+    },
+    "social": {
+      "twitter": "Twitter",
+      "facebook": "Facebook",
+      "instagram": "Instagram"
+    }
+  },
+  "language": {
+    "select": "Select Language",
+    "english": "English",
+    "kinyarwanda": "Kinyarwanda"
+  },
+  "login": {
+    "title": "Sign in",
+    "subtitle": "Enter your credentials to access your account",
+    "form": {
+      "email": {
+        "label": "Email",
+        "placeholder": "your.email@example.com"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "******",
+        "show": "Show password",
+        "hide": "Hide password"
+      }
+    },
+    "forgotPassword": "Forgot password?",
+    "button": {
+      "signIn": "Sign in",
+      "loading": "Signing in..."
+    },
+    "footer": {
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create one"
+    },
+    "validation": {
+      "email": "Please enter a valid email",
+      "password": "Password must be at least 6 characters"
+    }
+  },
+  "register": {
+    "title": "Create an account",
+    "subtitle": "Enter your information to create an account",
+    "form": {
+      "name": {
+        "label": "Full Name",
+        "placeholder": "Enter your full name"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "your.email@example.com"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "******",
+        "show": "Show password",
+        "hide": "Hide password"
+      },
+      "confirmPassword": {
+        "label": "Confirm Password",
+        "placeholder": "******"
+      },
+      "address": {
+        "title": "Address Information"
+      },
+      "province": {
+        "label": "Province",
+        "placeholder": "Select a province"
+      },
+      "district": {
+        "label": "District",
+        "placeholder": "Select a district"
+      },
+      "sector": {
+        "label": "Sector",
+        "placeholder": "Select a sector"
+      },
+      "cell": {
+        "label": "Cell",
+        "placeholder": "Select a cell"
+      },
+      "village": {
+        "label": "Village",
+        "placeholder": "Select a village"
+      }
+    },
+    "button": {
+      "register": "Register",
+      "loading": "Registering..."
+    },
+    "footer": {
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in"
+    },
+    "validation": {
+      "name": "Name must be at least 2 characters",
+      "email": "Please enter a valid email",
+      "password": "Password must be at least 6 characters",
+      "confirmPassword": "Confirm password is required",
+      "passwordsMatch": "Passwords don't match",
+      "province": "Province is required",
+      "district": "District is required",
+      "sector": "Sector is required",
+      "cell": "Cell is required",
+      "village": "Village is required"
+    }
+  }
+}

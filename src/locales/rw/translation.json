@@ -1,0 +1,186 @@
+{
+  "navbar": {
+    "home": "Ahabanza",
+    "features": "Ibiranga",
+    "howItWorks": "Uko Bikorwa",
+    "login": "Kwinjira",
+    "getStarted": "Tangira",
+    "dashboard": "Ikibaho",
+    "complaints": "Ibibazo",
+    "profile": "Umwirondoro Wanjye",
+    "logout": "Gusohoka"
+  },
+  "hero": {
+    "title": "Guhuza Abaturage na Guverinoma",
+    "subtitle": "Urubuga rwiza rutuma abaturage bagaragaza impungenge zabo n'abayobozi bakazisubiza neza.",
+    "signUp": "Iyandikishe",
+    "learnMore": "Menya Byinshi"
+  },
+  "features": {
+    "title": "Ibiranga By'ingenzi",
+    "subtitle": "Menya uko CitizenVoice iha imbaraga imiryango",
+    "feature1": {
+      "title": "Garagaza Impungenge",
+      "description": "Tanga ibibazo kandi ukurikirane uko bihagaze kuva bitanzwe kugeza bikemuwe."
+    },
+    "feature2": {
+      "title": "Gukurikirana Mu Mucyo",
+      "description": "Kurikiranira hafi uko ikibazo cyawe gihagaze n'amakuru mashya."
+    },
+    "feature3": {
+      "title": "Umutekano & Ibanga",
+      "description": "Amakuru yawe arindwa n'umutekano n'ibanga by'urwego rwo hejuru."
+    }
+  },
+  "howItWorks": {
+    "title": "Uko Bikorwa",
+    "subtitle": "Uburyo bworoshye kuva ku itangwa kugeza ku irangira",
+    "step1": {
+      "title": "Kwiyandikisha & Gutanga",
+      "description": "Fungura konti kandi utange ikibazo cyawe hamwe n'amakuru n'amashusho abigaragaza."
+    },
+    "step2": {
+      "title": "Gusuzuma & Gukora",
+      "description": "Abayobozi b'ibanze basuzuma ibyo watanze kandi batangira gukemura impungenge zawe."
+    },
+    "step3": {
+      "title": "Irangira & Amakuru",
+      "description": "Akira amakuru uko ikibazo cyawe kigenda kandi ku iherezo kikarangira."
+    }
+  },
+  "stats": {
+    "issuesResolved": "Ibibazo Byakemuwe",
+    "resolutionRate": "Igipimo cyo Gukemura",
+    "responseTime": "Igihe cyo Gusubiza"
+  },
+  "cta": {
+    "title": "Witeguye Gutangira?",
+    "subtitle": "Ifatanye n'urubuga rwacu uyu munsi kandi ube igice cy'umuti mu muryango wawe.",
+    "registerButton": "Iyandikishe Ubu",
+    "loginButton": "Injira"
+  },
+  "footer": {
+    "description": "Guhuza abaturage na guverinoma y'ibanze kugira ngo dushobore kubaka imiryango myiza binyuze mu itumanaho n'ubufatanye mu gukemura ibibazo.",
+    "copyright": "© 2025 CitizenVoice. Uburenganzira bwose bwihariwe.",
+    "quickLinks": {
+      "title": "Aho Ugana Vuba",
+      "home": "Ahabanza",
+      "features": "Ibiranga",
+      "howItWorks": "Uko Bikorwa",
+      "login": "Kwinjira",
+      "register": "Kwiyandikisha"
+    },
+    "legal": {
+      "title": "Amategeko",
+      "privacy": "Politiki y'Ubuzima Bwite",
+      "terms": "Amabwiriza y'Akazi",
+      "cookies": "Politiki ya Cookies"
+    },
+    "social": {
+      "twitter": "Twitter",
+      "facebook": "Facebook",
+      "instagram": "Instagram"
+    }
+  },
+  "language": {
+    "select": "Hitamo Ururimi",
+    "english": "Icyongereza",
+    "kinyarwanda": "Ikinyarwanda"
+  },
+  "login": {
+    "title": "Kwinjira",
+    "subtitle": "Shyiramo amakuru yawe kugira ngo winjire kuri konti yawe",
+    "form": {
+      "email": {
+        "label": "Imeri",
+        "placeholder": "imeri.yawe@example.com"
+      },
+      "password": {
+        "label": "Ijambo ry'ibanga",
+        "placeholder": "******",
+        "show": "Erekana ijambo ry'ibanga",
+        "hide": "Hisha ijambo ry'ibanga"
+      }
+    },
+    "forgotPassword": "Wibagiwe ijambo ry'ibanga?",
+    "button": {
+      "signIn": "Injira",
+      "loading": "Kwinjira..."
+    },
+    "footer": {
+      "noAccount": "Nta konti ufite?",
+      "createAccount": "Fungura imwe"
+    },
+    "validation": {
+      "email": "Nyamuneka shyiramo imeri ikora",
+      "password": "Ijambo ry'ibanga rigomba kuba rifite nibura inyuguti 6"
+    }
+  },
+  "register": {
+    "title": "Fungura konti",
+    "subtitle": "Shyiramo amakuru yawe kugira ngo ufungure konti",
+    "form": {
+      "name": {
+        "label": "Amazina yose",
+        "placeholder": "Shyiramo amazina yawe yose"
+      },
+      "email": {
+        "label": "Imeri",
+        "placeholder": "imeri.yawe@example.com"
+      },
+      "password": {
+        "label": "Ijambo ry'ibanga",
+        "placeholder": "******",
+        "show": "Erekana ijambo ry'ibanga",
+        "hide": "Hisha ijambo ry'ibanga"
+      },
+      "confirmPassword": {
+        "label": "Emeza Ijambo ry'ibanga",
+        "placeholder": "******"
+      },
+      "address": {
+        "title": "Amakuru y'aho utuye"
+      },
+      "province": {
+        "label": "Intara",
+        "placeholder": "Hitamo intara"
+      },
+      "district": {
+        "label": "Akarere",
+        "placeholder": "Hitamo akarere"
+      },
+      "sector": {
+        "label": "Umurenge",
+        "placeholder": "Hitamo umurenge"
+      },
+      "cell": {
+        "label": "Akagari",
+        "placeholder": "Hitamo akagari"
+      },
+      "village": {
+        "label": "Umudugudu",
+        "placeholder": "Hitamo umudugudu"
+      }
+    },
+    "button": {
+      "register": "Iyandikishe",
+      "loading": "Kwiyandikisha..."
+    },
+    "footer": {
+      "haveAccount": "Usanzwe ufite konti?",
+      "signIn": "Injira"
+    },
+    "validation": {
+      "name": "Izina rigomba kuba rifite nibura inyuguti 2",
+      "email": "Nyamuneka shyiramo imeri ikora",
+      "password": "Ijambo ry'ibanga rigomba kuba rifite nibura inyuguti 6",
+      "confirmPassword": "Kwemeza ijambo ry'ibanga birakenewe",
+      "passwordsMatch": "Amagambo y'ibanga ntabwo ahura",
+      "province": "Intara irakenewe",
+      "district": "Akarere garakenewe",
+      "sector": "Umurenge urakenewe",
+      "cell": "Akagari karakenewe",
+      "village": "Umudugudu urakenewe"
+    }
+  }
+}
