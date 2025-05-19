@@ -53,17 +53,14 @@ const Profile = () => {
   const [error, setError] = useState<string | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
   
-  // Check if user is a leader (to disable address editing)
   const isLeader = user?.role === 'LEADER';
   
-  // State for location dropdowns
   const [provinces, setProvinces] = useState<string[]>([]);
   const [districts, setDistricts] = useState<string[]>([]);
   const [sectors, setSectors] = useState<string[]>([]);
   const [cells, setCells] = useState<string[]>([]);
   const [villages, setVillages] = useState<string[]>([]);
 
-  // Form validation schema with translations
   const profileFormSchema = z.object({
     name: z.string().min(2, t('profile.validation.name')),
     email: z.string().email(t('profile.validation.email')),
@@ -89,28 +86,23 @@ const Profile = () => {
     },
   });
   
-  // Load provinces on component mount
   useEffect(() => {
     try {
       const allProvinces = getProvinces();
       setProvinces(allProvinces);
       
-      // If user has province, load districts
       if (user?.province) {
         const userDistricts = getDistricts(user.province);
         setDistricts(userDistricts);
         
-        // If user has district, load sectors
         if (user?.district) {
           const userSectors = getSectors(user.province, user.district);
           setSectors(userSectors);
           
-          // If user has sector, load cells
           if (user?.sector) {
             const userCells = getCells(user.province, user.district, user.sector);
             setCells(userCells);
             
-            // If user has cell, load villages
             if (user?.cell) {
               const userVillages = getVillages(user.province, user.district, user.sector, user.cell);
               setVillages(userVillages);
@@ -124,19 +116,16 @@ const Profile = () => {
     }
   }, [user]);
   
-  // Watch for form value changes to update cascading dropdowns
   const watchProvince = profileForm.watch('province');
   const watchDistrict = profileForm.watch('district');
   const watchSector = profileForm.watch('sector');
   const watchCell = profileForm.watch('cell');
   
-  // Update districts when province changes
   useEffect(() => {
     if (watchProvince) {
       try {
         const newDistricts = getDistricts(watchProvince);
         setDistricts(newDistricts);
-        // Reset lower-level selections
         profileForm.setValue('district', '');
         profileForm.setValue('sector', '');
         profileForm.setValue('cell', '');
